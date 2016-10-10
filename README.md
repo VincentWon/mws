@@ -5,7 +5,7 @@ Amazon MWS
 
 A library to connect to Amazon's Merchant Web Services (MWS) in an object-oriented manner, with a focus on intuitive usage.  
 
-## Example Usage
+##Example Usage
 Here are a couple of examples of the library in use.
 All of the technical details required by the API are handled behind the scenes,
 so users can easily build code for sending requests to Amazon
