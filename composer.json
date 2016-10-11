@@ -16,6 +16,9 @@
     "phpunit/phpunit": "3.7.*"
   },
   "autoload": {
+    "classmap": [
+      "includes/classes/"
+    ],
     "psr-4": {
       "VincentWon\\Mws\\": "src/"
     }
