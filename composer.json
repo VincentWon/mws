@@ -1,7 +1,7 @@
 {
-  "name": "cpigroup/php-amazon-mws",
+  "name": "VincentWon/MWS",
   "type": "library",
-  "description": "An open-source library to connect to Amazon's MWS web services in an object-oriented manner, with a focus on intuitive usage.",
+  "description": "Amazon MWS API for Laravel.",
   "license": "Apache-2.0",
   "keywords": [
     "API",
@@ -16,8 +16,8 @@
     "phpunit/phpunit": "3.7.*"
   },
   "autoload": {
-    "classmap": [
-      "src/"
-    ]
+    "psr-4": {
+      "VincentWon\\Mws\\": "src/"
+    }
   }
 }
