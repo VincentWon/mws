@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -42,12 +43,9 @@ abstract class AmazonReportsCore extends AmazonCore
     public function __construct($s = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         $this->urlbranch = '';
         if (isset($this->env['AMAZON_VERSION_REPORTS'])) {
             $this->options['Version'] = $this->env['AMAZON_VERSION_REPORTS'];
         }
     }
 }
-
-?>

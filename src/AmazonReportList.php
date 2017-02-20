@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -49,7 +50,6 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     public function __construct($s = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         if (isset($THROTTLE_LIMIT_REPORTLIST)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTLIST;
         }
@@ -265,37 +265,26 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     public function fetchReportList($r = true)
     {
         $this->prepareToken();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
-
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->parseXML($xml);
-
         $this->checkToken($xml);
-
         if ($this->tokenFlag && $this->tokenUseFlag && $r === true) {
             while ($this->tokenFlag) {
                 $this->log("Recursively fetching more Reports");
                 $this->fetchReportList(false);
             }
-
         }
-
     }
 
     /**
@@ -354,7 +343,6 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
             if ($key != 'ReportInfo') {
                 continue;
             }
-
             $this->reportList[$i]['ReportId'] = (string)$x->ReportId;
             $this->reportList[$i]['ReportType'] = (string)$x->ReportType;
             $this->reportList[$i]['ReportRequestId'] = (string)$x->ReportRequestId;
@@ -363,7 +351,6 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
             if (isset($x->AcknowledgedDate)) {
                 $this->reportList[$i]['AcknowledgedDate'] = (string)$x->AcknowledgedDate;
             }
-
             $this->index++;
         }
     }
@@ -378,26 +365,19 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     public function fetchCount()
     {
         $this->prepareCount();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->count = (string)$xml->Count;
-
     }
 
     /**
@@ -410,7 +390,6 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
      */
     protected function prepareCount()
     {
-        include($this->env);
         $this->options['Action'] = 'GetReportCount';
         if (isset($THROTTLE_LIMIT_REPORTREQUESTLIST)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTREQUESTLIST;
@@ -623,7 +602,4 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     {
         return isset($this->reportList[$this->i]);
     }
-
 }
-
-?>

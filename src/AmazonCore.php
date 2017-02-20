@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -137,7 +138,6 @@ abstract class AmazonCore
         $this->setConfig($config);
         $this->setStore($s);
         $this->setMock($mock, $m);
-
         $this->env = $config['env'];
         $this->options['SignatureVersion'] = 2;
         $this->options['SignatureMethod'] = 'HmacSHA256';
@@ -171,7 +171,6 @@ abstract class AmazonCore
             if ($b) {
                 $this->log("Mock Mode set to ON");
             }
-
             if (is_string($files)) {
                 $this->mockFiles = array();
                 $this->mockFiles[0] = $files;
@@ -227,8 +226,6 @@ abstract class AmazonCore
             $url = 'mock/' . $this->mockFiles[$this->mockIndex];
         }
         $this->mockIndex++;
-
-
         if (file_exists($url)) {
 
             try {
@@ -248,7 +245,6 @@ abstract class AmazonCore
             $this->log("Mock File not found: $url", 'Warning');
             return false;
         }
-
     }
 
     /**
@@ -298,7 +294,6 @@ abstract class AmazonCore
             $this->log("fetchMockResponse only works with response code numbers", 'Warning');
             return false;
         }
-
         $r = array();
         $r['head'] = 'HTTP/1.1 200 OK';
         $r['body'] = '<?xml version="1.0"?><root></root>';
@@ -326,7 +321,6 @@ abstract class AmazonCore
                 }
             }
         }
-
         if ($r['code'] != 200) {
             $r['body'] = '<?xml version="1.0"?>
 <ErrorResponse xmlns="http://mws.amazonaws.com/doc/2009-01-01/">
@@ -338,8 +332,6 @@ abstract class AmazonCore
   <RequestID>123</RequestID>
 </ErrorResponse>';
         }
-
-
         $r['headarray'] = array();
         $this->log("Returning Mock Response: " . $r['code']);
         return $r;
@@ -426,13 +418,10 @@ abstract class AmazonCore
         if (empty($this->config['store']) || !is_array($this->config['store'])) {
             throw new \Exception("No stores defined!");
         }
-
         $store = $this->config['store'];
-
         if (!isset($s) && count($store) === 1) {
             $s = key($store);
         }
-
         if (array_key_exists($s, $store)) {
             $this->storeName = $s;
             if (array_key_exists('merchantId', $store[$s])) {
@@ -508,17 +497,14 @@ abstract class AmazonCore
                 }
                 call_user_func($logfunction, $msg, $loglevel);
             }
-
             if (isset($muteLog) && $muteLog == true) {
                 return;
             }
-
             if (isset($userName) && $userName != '') {
                 $name = $userName;
             } else {
                 $name = 'guest';
             }
-
             if (isset($backtrace) && isset($backtrace[1]) && isset($backtrace[1]['file']) && isset($backtrace[1]['line']) && isset($backtrace[1]['function'])) {
                 $fileName = basename($backtrace[1]['file']);
                 $file = $backtrace[1]['file'];
@@ -607,7 +593,6 @@ abstract class AmazonCore
         } else {
             throw new \Exception("Secret Key is missing!");
         }
-
         unset($this->options['Signature']);
         $this->options['Timestamp'] = $this->genTime();
         $this->options['Signature'] = $this->_signParameters($this->options, $secretKey);
@@ -626,12 +611,10 @@ abstract class AmazonCore
     {
         $this->log("Making request to Amazon: " . $this->options['Action']);
         $response = $this->fetchURL($url, $param);
-
         while ($response['code'] == '503' && $this->throttleStop == false) {
             $this->sleep();
             $response = $this->fetchURL($url, $param);
         }
-
         $this->rawResponses[] = $response;
         return $response;
     }
@@ -785,9 +768,7 @@ abstract class AmazonCore
     function fetchURL($url, $param)
     {
         $return = array();
-
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 0);
         curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
@@ -802,14 +783,12 @@ abstract class AmazonCore
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['Post']);
             }
         }
-
         $data = curl_exec($ch);
         if (curl_errno($ch)) {
             $return['ok'] = -1;
             $return['error'] = curl_error($ch);
             return $return;
         }
-
         if (is_numeric(strpos($data, 'HTTP/1.1 100 Continue'))) {
             $data = str_replace('HTTP/1.1 100 Continue', '', $data);
         }
@@ -821,36 +800,30 @@ abstract class AmazonCore
             $return['head'] = null;
             $return['body'] = null;
         }
-
         $matches = array();
         $data = preg_match("/HTTP\/[0-9.]+ ([0-9]+) (.+)\r\n/", $return['head'], $matches);
         if (!empty($matches)) {
             $return['code'] = $matches[1];
             $return['answer'] = $matches[2];
         }
-
         $data = preg_match("/meta http-equiv=.refresh. +content=.[0-9]*;url=([^'\"]*)/i", $return['body'], $matches);
         if (!empty($matches)) {
             $return['location'] = $matches[1];
             $return['code'] = '301';
         }
-
         if ($return['code'] == '200' || $return['code'] == '302') {
             $return['ok'] = 1;
         } else {
             $return['error'] = (($return['answer'] and $return['answer'] != 'OK') ? $return['answer'] : 'Something wrong!');
             $return['ok'] = 0;
         }
-
         foreach (preg_split('/\n/', $return['head'], -1, PREG_SPLIT_NO_EMPTY) as $value) {
             $data = preg_split('/:/', $value, 2, PREG_SPLIT_NO_EMPTY);
             if (is_array($data) and isset($data['1'])) {
                 $return['headarray'][$data['0']] = trim($data['1']);
             }
         }
-
         curl_close($ch);
-
         return $return;
     }
     // End Functions from Athena
@@ -947,14 +920,7 @@ abstract class AmazonCore
                 throw new Exception ("Non-supported signing method specified");
             }
         }
-
-        return base64_encode(
-            hash_hmac($hash, $data, $key, true)
-        );
+        return base64_encode(hash_hmac($hash, $data, $key, true));
     }
-
     // -- End Functions from Amazon --
-
 }
-
-?>

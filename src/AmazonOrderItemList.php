@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -52,11 +53,9 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
     public function __construct($s = null, $id = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         if (!is_null($id)) {
             $this->setOrderId($id);
         }
-
         if (isset($THROTTLE_LIMIT_ITEM)) {
             $this->throttleLimit = $THROTTLE_LIMIT_ITEM;
         }
@@ -125,24 +124,18 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
     public function fetchItems($r = true)
     {
         $this->prepareToken();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         if (is_null($xml->AmazonOrderId)) {
             $this->log("You just got throttled.", 'Warning');
             return false;
@@ -152,11 +145,8 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
             $this->log('You grabbed the wrong Order\'s items! - ' . $this->options['AmazonOrderId'] . ' =/= ' . $this->orderId,
                 'Urgent');
         }
-
         $this->parseXML($xml->OrderItems);
-
         $this->checkToken($xml);
-
         if ($this->tokenFlag && $this->tokenUseFlag && $r === true) {
             while ($this->tokenFlag) {
                 $this->log("Recursively fetching more items");
@@ -199,10 +189,8 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
         if (!$xml) {
             return false;
         }
-
         foreach ($xml->children() as $item) {
             $n = $this->index;
-
             $this->itemList[$n]['ASIN'] = (string)$item->ASIN;
             $this->itemList[$n]['SellerSKU'] = (string)$item->SellerSKU;
             $this->itemList[$n]['OrderItemId'] = (string)$item->OrderItemId;
@@ -306,7 +294,6 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
             }
             $this->index++;
         }
-
     }
 
     /**
@@ -938,5 +925,3 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
         return isset($this->itemList[$this->i]);
     }
 }
-
-?>

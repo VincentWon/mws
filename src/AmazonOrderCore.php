@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -48,5 +49,3 @@ abstract class AmazonOrderCore extends AmazonCore
         }
     }
 }
-
-?>

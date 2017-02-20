@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -48,16 +49,13 @@ class AmazonOrder extends AmazonOrderCore
     public function __construct($s = null, $id = null, $data = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         if ($id) {
             $this->setOrderId($id);
         }
         if ($data) {
             $this->parseXML($data);
         }
-
         $this->options['Action'] = 'GetOrder';
-
         if (isset($this->env['THROTTLE_LIMIT_ORDER'])) {
             $this->throttleLimit = $this->env['THROTTLE_LIMIT_ORDER'];
         }
@@ -100,11 +98,8 @@ class AmazonOrder extends AmazonOrderCore
             $this->log("Order ID must be set in order to fetch it!", 'Warning');
             return false;
         }
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         if ($this->mockMode) {
             $xml = $this->fetchMockFile();
         } else {
@@ -116,9 +111,7 @@ class AmazonOrder extends AmazonOrderCore
 
             $xml = simplexml_load_string($response['body']);
         }
-
         $this->parseXML($xml->GetOrderResult->Orders->Order);
-
     }
 
     /**
@@ -136,8 +129,13 @@ class AmazonOrder extends AmazonOrderCore
         if (!is_bool($token)) {
             $token = false;
         }
-        $items = new AmazonOrderItemList($this->storeName, $this->data['AmazonOrderId'], $this->mockMode,
-            $this->mockFiles, $this->config);
+        $items = new AmazonOrderItemList(
+            $this->storeName,
+            $this->data['AmazonOrderId'],
+            $this->mockMode,
+            $this->mockFiles,
+            $this->config
+        );
         $items->mockIndex = $this->mockIndex;
         $items->setUseToken($token);
         $items->fetchItems();
@@ -203,7 +201,6 @@ class AmazonOrder extends AmazonOrderCore
         }
         if (isset($xml->PaymentExecutionDetail)) {
             $d['PaymentExecutionDetail'] = array();
-
             $i = 0;
             foreach ($xml->PaymentExecutionDetail->children() as $x) {
                 $d['PaymentExecutionDetail'][$i]['Amount'] = (string)$x->Payment->Amount;
@@ -261,7 +258,6 @@ class AmazonOrder extends AmazonOrderCore
         if (isset($xml->IsPremiumOrder)) {
             $d['IsPremiumOrder'] = (string)$xml->IsPremiumOrder;
         }
-
         $this->data = $d;
     }
 
@@ -807,11 +803,9 @@ class AmazonOrder extends AmazonOrderCore
     {
         if (isset($this->data['NumberOfItemsShipped']) && isset($this->data['NumberOfItemsUnshipped'])) {
             $total = $this->data['NumberOfItemsShipped'] + $this->data['NumberOfItemsUnshipped'];
-
             if ($total == 0) {
                 return 0;
             }
-
             $ratio = $this->data['NumberOfItemsShipped'] / $total;
             return $ratio;
         } else {
@@ -879,5 +873,3 @@ class AmazonOrder extends AmazonOrderCore
         }
     }
 }
-
-?>

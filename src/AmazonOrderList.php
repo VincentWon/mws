@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -50,7 +51,6 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
     {
         parent::__construct($s, $mock, $m, $config);
         $this->resetMarketplaceFilter();
-
         if (isset($this->env['THROTTLE_LIMIT_ORDERLIST'])) {
             $this->throttleLimit = $this->env['THROTTLE_LIMIT_ORDERLIST'];
         }
@@ -133,7 +133,6 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
                     return false;
                 }
             }
-
         } catch (Exception $e) {
             $this->log('Error: ' . $e->getMessage(), 'Warning');
             return false;
@@ -443,36 +442,26 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
         ) {
             $this->setLimits('Created');
         }
-
         $this->prepareToken();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->parseXML($xml);
-
         $this->checkToken($xml);
-
         if ($this->tokenFlag && $this->tokenUseFlag && $r === true) {
             while ($this->tokenFlag) {
                 $this->log("Recursively fetching more orders");
                 $this->fetchOrders(false);
             }
-
         }
     }
 
@@ -488,7 +477,6 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
     {
         if ($this->tokenFlag && $this->tokenUseFlag) {
             $this->options['Action'] = 'ListOrdersByNextToken';
-
             //When using tokens, only the NextToken option should be used
             unset($this->options['SellerOrderId']);
             $this->resetOrderStatusFilter();
@@ -501,7 +489,6 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
             unset($this->options['CreatedAfter']);
             unset($this->options['CreatedBefore']);
             unset($this->options['MaxResultsPerPage']);
-
         } else {
             $this->options['Action'] = 'ListOrders';
             unset($this->options['NextToken']);
@@ -522,13 +509,18 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
         if (!$xml) {
             return false;
         }
-
         foreach ($xml->Orders->children() as $key => $data) {
             if ($key != 'Order') {
                 break;
             }
-            $this->orderList[$this->index] = new AmazonOrder($this->storeName, null, $data, $this->mockMode,
-                $this->mockFiles, $this->config);
+            $this->orderList[$this->index] = new AmazonOrder(
+                $this->storeName,
+                null,
+                $data,
+                $this->mockMode,
+                $this->mockFiles,
+                $this->config
+            );
             $this->orderList[$this->index]->mockIndex = $this->mockIndex;
             $this->index++;
         }
@@ -621,5 +613,3 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
         return isset($this->orderList[$this->i]);
     }
 }
-
-?>

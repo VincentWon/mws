@@ -45,9 +45,7 @@ class AmazonReportRequest extends AmazonReportsCore
     public function __construct($s = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         $this->options['Action'] = 'RequestReport';
-
         if (isset($THROTTLE_LIMIT_REPORTREQUEST)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTREQUEST;
         }
@@ -262,26 +260,19 @@ class AmazonReportRequest extends AmazonReportsCore
             $this->log("Report Type must be set in order to request a report!", 'Warning');
             return false;
         }
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->parseXML($xml->ReportRequestInfo);
-
     }
 
     /**
@@ -296,7 +287,6 @@ class AmazonReportRequest extends AmazonReportsCore
         if (!$xml) {
             return false;
         }
-
         $this->response = array();
         $this->response['ReportRequestId'] = (string)$xml->ReportRequestId;
         $this->response['ReportType'] = (string)$xml->ReportType;
@@ -305,7 +295,6 @@ class AmazonReportRequest extends AmazonReportsCore
         $this->response['Scheduled'] = (string)$xml->Scheduled;
         $this->response['SubmittedDate'] = (string)$xml->SubmittedDate;
         $this->response['ReportProcessingStatus'] = (string)$xml->ReportProcessingStatus;
-
     }
 
     /**
@@ -446,5 +435,3 @@ class AmazonReportRequest extends AmazonReportsCore
     }
 
 }
-
-?>

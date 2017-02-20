@@ -1,5 +1,6 @@
 <?php
 namespace VincentWon\Mws;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -51,7 +52,6 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     public function __construct($s = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         if (isset($THROTTLE_LIMIT_REPORTREQUESTLIST)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTREQUESTLIST;
         }
@@ -282,36 +282,26 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     public function fetchRequestList($r = true)
     {
         $this->prepareToken();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->parseXML($xml);
-
         $this->checkToken($xml);
-
         if ($this->tokenFlag && $this->tokenUseFlag && $r === true) {
             while ($this->tokenFlag) {
                 $this->log("Recursively fetching more Report Requests");
                 $this->fetchRequestList(false);
             }
-
         }
-
     }
 
     /**
@@ -389,7 +379,6 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
         if (!$xml) {
             return false;
         }
-
         foreach ($xml->children() as $key => $x) {
             $i = $this->index;
             if ($key == 'Count') {
@@ -399,7 +388,6 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
             if ($key != 'ReportRequestInfo') {
                 continue;
             }
-
             $this->reportList[$i]['ReportRequestId'] = (string)$x->ReportRequestId;
             $this->reportList[$i]['ReportType'] = (string)$x->ReportType;
             $this->reportList[$i]['StartDate'] = (string)$x->StartDate;
@@ -410,7 +398,6 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
             $this->reportList[$i]['GeneratedReportId'] = (string)$x->GeneratedReportId;
             $this->reportList[$i]['StartedProcessingDate'] = (string)$x->StartedProcessingDate;
             $this->reportList[$i]['CompletedDate'] = (string)$x->CompletedDate;
-
             $this->index++;
         }
     }
@@ -427,27 +414,19 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     public function cancelRequests()
     {
         $this->prepareCancel();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
-
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->parseXML($xml);
-
     }
 
     /**
@@ -460,26 +439,19 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     public function fetchCount()
     {
         $this->prepareCount();
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
-
         $path = $this->options['Action'] . 'Result';
         if ($this->mockMode) {
             $xml = $this->fetchMockFile()->$path;
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $xml = simplexml_load_string($response['body'])->$path;
         }
-
         $this->count = (string)$xml->Count;
-
     }
 
     /**
@@ -799,5 +771,3 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     }
 
 }
-
-?>

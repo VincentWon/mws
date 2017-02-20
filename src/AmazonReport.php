@@ -1,5 +1,8 @@
 <?php
 namespace VincentWon\Mws;
+
+use Storage;
+
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -47,13 +50,10 @@ class AmazonReport extends AmazonReportsCore
     public function __construct($s = null, $id = null, $mock = false, $m = null, $config = null)
     {
         parent::__construct($s, $mock, $m, $config);
-
         if ($id) {
             $this->setReportId($id);
         }
-
         $this->options['Action'] = 'GetReport';
-
         if (isset($THROTTLE_LIMIT_REPORT)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORT;
         }
@@ -93,19 +93,15 @@ class AmazonReport extends AmazonReportsCore
             $this->log("Report ID must be set in order to fetch it!", 'Warning');
             return false;
         }
-
         $url = $this->urlbase . $this->urlbranch;
-
         $query = $this->genQuery();
         if ($this->mockMode) {
             $this->rawreport = $this->fetchMockFile(false);
         } else {
             $response = $this->sendRequest($url, array('Post' => $query));
-
             if (!$this->checkResponse($response)) {
                 return false;
             }
-
             $this->rawreport = $response['body'];
         }
 
@@ -137,14 +133,13 @@ class AmazonReport extends AmazonReportsCore
             return false;
         }
         try {
-            file_put_contents($path, $this->rawreport);
+//            file_put_contents($path, $this->rawreport);
+            Storage::put($path, $this->rawreport);
             $this->log("Successfully saved report #" . $this->options['ReportId'] . " at $path");
         } catch (Exception $e) {
             $this->log("Unable to save report #" . $this->options['ReportId'] . " at $path: $e", 'Urgent');
             return false;
         }
+        return true;
     }
-
 }
-
-?>
