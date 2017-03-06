@@ -58,9 +58,8 @@ abstract class AmazonProductsCore extends AmazonCore
         } else {
             $this->log("Marketplace ID is missing", 'Urgent');
         }
-
-        if (isset($THROTTLE_LIMIT_PRODUCT)) {
-            $this->throttleLimit = $THROTTLE_LIMIT_PRODUCT;
+        if (isset($this->env['THROTTLE_LIMIT_PRODUCT'])) {
+            $this->throttleLimit = $this->env['THROTTLE_LIMIT_PRODUCT'];
         }
     }
 
@@ -102,8 +101,13 @@ abstract class AmazonProductsCore extends AmazonCore
             }
             if (isset($x->Products)) {
                 foreach ($x->Products->children() as $z) {
-                    $this->productList[$this->index] = new AmazonProduct($this->storeName, $z, $this->mockMode,
-                        $this->mockFiles, $this->config);
+                    $this->productList[$this->index] = new AmazonProduct(
+                        $this->storeName,
+                        $z,
+                        $this->mockMode,
+                        $this->mockFiles,
+                        $this->config
+                    );
                     if (isset($temp['@attributes'])) {
                         $this->productList[$this->index]->data['Identifiers']['Request'] = $temp['@attributes'];
                     }
@@ -116,8 +120,13 @@ abstract class AmazonProductsCore extends AmazonCore
                     'GetLowestPricedOffersForSKUResult',
                     'GetLowestPricedOffersForASINResult'
                 ))) {
-                    $this->productList[$this->index] = new AmazonProduct($this->storeName, $x, $this->mockMode,
-                        $this->mockFiles, $this->config);
+                    $this->productList[$this->index] = new AmazonProduct(
+                        $this->storeName,
+                        $x,
+                        $this->mockMode,
+                        $this->mockFiles,
+                        $this->config
+                    );
                     $this->index++;
                 } else {
                     foreach ($x->children() as $z) {
@@ -129,8 +138,13 @@ abstract class AmazonProductsCore extends AmazonCore
                             $this->productList[$z->getName()] = (string)$z;
                             $this->log("Special case: " . $z->getName(), 'Warning');
                         } else {
-                            $this->productList[$this->index] = new AmazonProduct($this->storeName, $z, $this->mockMode,
-                                $this->mockFiles, $this->config);
+                            $this->productList[$this->index] = new AmazonProduct(
+                                $this->storeName,
+                                $z,
+                                $this->mockMode,
+                                $this->mockFiles,
+                                $this->config
+                            );
                             $this->index++;
                         }
                     }
