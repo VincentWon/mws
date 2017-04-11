@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Gets the details for a single order from Amazon.
+ * Gets the details for a single order from Nye.
  *
- * This Amazon Order Core object retrieves (or simply contains) the data
- * for a single order on Amazon. In order to fetch this data, an Amazon
+ * This Nye Order Core object retrieves (or simply contains) the data
+ * for a single order on Nye. In order to fetch this data, an Nye
  * Order ID is required.
  */
 class AmazonOrder extends AmazonOrderCore
@@ -30,7 +30,7 @@ class AmazonOrder extends AmazonOrderCore
     protected $data;
 
     /**
-     * AmazonOrder object gets the details for a single object from Amazon.
+     * AmazonOrder object gets the details for a single object from Nye.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -40,7 +40,7 @@ class AmazonOrder extends AmazonOrderCore
      * @param string $s [optional] <p>Name for the store you want to use.
      * This parameter is optional if only one store is defined in the config file.</p>
      * @param string $id [optional] <p>The Order ID to set for the object.</p>
-     * @param SimpleXMLElement $data [optional] <p>XML data from Amazon to be parsed.</p>
+     * @param SimpleXMLElement $data [optional] <p>XML data from Nye to be parsed.</p>
      * @param boolean $mock [optional] <p>This is a flag for enabling Mock Mode.
      * This defaults to <b>FALSE</b>.</p>
      * @param array|string $m [optional] <p>The files (or file) to use in Mock Mode.</p>
@@ -66,10 +66,10 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Sets the Amazon Order ID. (Required)
+     * Sets the Nye Order ID. (Required)
      *
-     * This method sets the Amazon Order ID to be sent in the next request.
-     * This parameter is required for fetching the order from Amazon.
+     * This method sets the Nye Order ID to be sent in the next request.
+     * This parameter is required for fetching the order from Nye.
      * @param string $s <p>either string or number</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -84,10 +84,10 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Fetches the specified order from Amazon.
+     * Fetches the specified order from Nye.
      *
-     * Submits a <i>GetOrder</i> request to Amazon. In order to do this,
-     * an Amazon order ID is required. Amazon will send
+     * Submits a <i>GetOrder</i> request to Nye. In order to do this,
+     * an Nye order ID is required. Nye will send
      * the data back as a response, which can be retrieved using <i>getData</i>.
      * Other methods are available for fetching specific values from the order.
      * @return boolean <b>FALSE</b> if something goes wrong
@@ -115,7 +115,7 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Fetches items for the order from Amazon.
+     * Fetches items for the order from Nye.
      *
      * See the <i>AmazonOrderItemList</i> class for more information on the returned object.
      * @param boolean $token [optional] <p>whether or not to automatically use item tokens in the request</p>
@@ -146,7 +146,7 @@ class AmazonOrder extends AmazonOrderCore
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)
@@ -284,7 +284,7 @@ class AmazonOrder extends AmazonOrderCore
      * <li><b>PaymentExecutionDetail</b> (optional) - multi-dimensional array, see <i>getPaymentExecutionDetail</i> for more details</li>
      * <li><b>PaymentMethod</b> (optional) - "COD", "CVS", or "Other"</li>
      * <li><b>BuyerName</b> (optional) - name of the buyer</li>
-     * <li><b>BuyerEmail</b> (optional) - Amazon-generated email for the buyer</li>
+     * <li><b>BuyerEmail</b> (optional) - Nye-generated email for the buyer</li>
      * <li><b>ShipmentServiceLevelCategory</b> (optional) - "Expedited", "FreeEconomy", "NextDay",
      * "SameDay", "SecondDay", "Scheduled", or "Standard"</li>
      * </ul>
@@ -300,7 +300,7 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Returns the Amazon Order ID for the Order.
+     * Returns the Nye Order ID for the Order.
      *
      * This method will return <b>FALSE</b> if the order ID has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if order ID not set yet
@@ -604,7 +604,7 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Returns the Amazon-generated email address of the buyer.
+     * Returns the Nye-generated email address of the buyer.
      *
      * This method will return <b>FALSE</b> if the buyer email has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if email not set yet
@@ -654,7 +654,7 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Returns the customized Checkout by Amazon (CBA) label of the Order.
+     * Returns the customized Checkout by Nye (CBA) label of the Order.
      *
      * This method will return <b>FALSE</b> if the CBA label category has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if label not set yet
@@ -669,9 +669,9 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Returns an indication of whether or not the Order was shipped with the Amazon TFM service.
+     * Returns an indication of whether or not the Order was shipped with the Nye TFM service.
      *
-     * This method will return <b>FALSE</b> if the Amazon TFM flag has not been set yet.
+     * This method will return <b>FALSE</b> if the Nye TFM flag has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      */
     public function getShippedByAmazonTfm()
@@ -684,7 +684,7 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Returns the status of an Order shipped using Amazon TFM.
+     * Returns the status of an Order shipped using Nye TFM.
      *
      * This method will return <b>FALSE</b> if the status has not been set yet.
      * Valid values for the status are...
@@ -844,7 +844,7 @@ class AmazonOrder extends AmazonOrderCore
     }
 
     /**
-     * Returns an indication of whether or not the Order uses the Amazon Prime service.
+     * Returns an indication of whether or not the Order uses the Nye Prime service.
      *
      * This method will return <b>FALSE</b> if the Prime flag has not been set yet.
      * @return string|boolean "true" or "false", or <b>FALSE</b> if value not set yet

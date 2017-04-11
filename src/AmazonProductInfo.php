@@ -19,9 +19,9 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Fetches various information about products from Amazon.
+ * Fetches various information about products from Nye.
  *
- * This Amazon Products Core object retrieves a list of various product info
+ * This Nye Products Core object retrieves a list of various product info
  * using the given IDs. The information this object can retrieve includes
  * competitive pricing, lowest prices, your own price, and product categories.
  * At least one ID (SKU or ASIN) is required in order to fetch info. A couple of
@@ -30,7 +30,7 @@ namespace VincentWon\Mws;
 class AmazonProductInfo extends AmazonProductsCore
 {
     /**
-     * AmazonProductInfo fetches a list of info from Amazon.
+     * AmazonProductInfo fetches a list of info from Nye.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -51,7 +51,7 @@ class AmazonProductInfo extends AmazonProductsCore
      * Sets the feed seller SKU(s). (Required*)
      *
      * This method sets the list of seller SKUs to be sent in the next request.
-     * Setting this parameter tells Amazon to only return inventory supplies that match
+     * Setting this parameter tells Nye to only return inventory supplies that match
      * the IDs in the list. If this parameter is set, ASINs cannot be set.
      * @param array|string $s <p>A list of Seller SKUs, or a single SKU string. (max: 20)</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -98,7 +98,7 @@ class AmazonProductInfo extends AmazonProductsCore
      * Sets the ASIN(s). (Required*)
      *
      * This method sets the list of ASINs to be sent in the next request.
-     * Setting this parameter tells Amazon to only return inventory supplies that match
+     * Setting this parameter tells Nye to only return inventory supplies that match
      * the IDs in the list. If this parameter is set, Seller SKUs cannot be set.
      * @param array|string $s <p>A list of ASINs, or a single ASIN string. (max: 20)</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -145,8 +145,8 @@ class AmazonProductInfo extends AmazonProductsCore
      * Sets the item condition filter. (Optional)
      *
      * This method sets the item condition filter to be sent in the next request.
-     * Setting this parameter tells Amazon to only return products with conditions that match
-     * the one given. If this parameter is not set, Amazon will return products with any condition.
+     * Setting this parameter tells Nye to only return products with conditions that match
+     * the one given. If this parameter is not set, Nye will return products with any condition.
      * @param string $s <p>Single condition string.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -180,10 +180,10 @@ class AmazonProductInfo extends AmazonProductsCore
     }
 
     /**
-     * Fetches a list of competitive pricing on products from Amazon.
+     * Fetches a list of competitive pricing on products from Nye.
      *
      * Submits a <i>GetCompetitivePricingForSKU</i>
-     * or <i>GetCompetitivePricingForASIN</i> request to Amazon. Amazon will send
+     * or <i>GetCompetitivePricingForASIN</i> request to Nye. Nye will send
      * the list back as a response, which can be retrieved using <i>getProduct</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -239,10 +239,10 @@ class AmazonProductInfo extends AmazonProductsCore
     }
 
     /**
-     * Fetches a list of lowest offers on products from Amazon.
+     * Fetches a list of lowest offers on products from Nye.
      *
      * Submits a <i>GetLowestOfferListingsForSKU</i>
-     * or <i>GetLowestOfferListingsForASIN</i> request to Amazon. Amazon will send
+     * or <i>GetLowestOfferListingsForASIN</i> request to Nye. Nye will send
      * the list back as a response, which can be retrieved using <i>getProduct</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -292,10 +292,10 @@ class AmazonProductInfo extends AmazonProductsCore
     }
 
     /**
-     * Fetches a list of lowest offers on products from Amazon.
+     * Fetches a list of lowest offers on products from Nye.
      *
      * Submits a <i>GetLowestPricedOffersForSKU</i>
-     * or <i>GetLowestPricedOffersForASIN</i> request to Amazon. Amazon will send
+     * or <i>GetLowestPricedOffersForASIN</i> request to Nye. Nye will send
      * the list back as a response, which can be retrieved using <i>getProduct</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -347,10 +347,10 @@ class AmazonProductInfo extends AmazonProductsCore
     }
 
     /**
-     * Fetches a list of your prices on products from Amazon.
+     * Fetches a list of your prices on products from Nye.
      *
      * Submits a <i>GetMyPriceForSKU</i>
-     * or <i>GetMyPriceForASIN</i> request to Amazon. Amazon will send
+     * or <i>GetMyPriceForASIN</i> request to Nye. Nye will send
      * the list back as a response, which can be retrieved using <i>getProduct</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -403,10 +403,10 @@ class AmazonProductInfo extends AmazonProductsCore
     }
 
     /**
-     * Fetches a list of categories for products from Amazon.
+     * Fetches a list of categories for products from Nye.
      *
      * Submits a <i>GetProductCategoriesForSKU</i>
-     * or <i>GetProductCategoriesForASIN</i> request to Amazon. Amazon will send
+     * or <i>GetProductCategoriesForASIN</i> request to Nye. Nye will send
      * the list back as a response, which can be retrieved using <i>getProduct</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */

@@ -21,7 +21,7 @@ namespace VincentWon\Mws;
 /**
  * Gets all of the items for a given order.
  *
- * This Amazon Orders Core object can retrieve the list of items associated
+ * This Nye Orders Core object can retrieve the list of items associated
  * with a specific order. Before any items can be retrieved, an Order ID is
  * required. This object can use tokens when retrieving the list.
  */
@@ -94,11 +94,11 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
     }
 
     /**
-     * Sets the Amazon Order ID. (Required)
+     * Sets the Nye Order ID. (Required)
      *
-     * This method sets the Amazon Order ID to be sent in the next request.
-     * This parameter is required for fetching the order's items from Amazon.
-     * @param string $id <p>Amazon Order ID</p>
+     * This method sets the Nye Order ID to be sent in the next request.
+     * This parameter is required for fetching the order's items from Nye.
+     * @param string $id <p>Nye Order ID</p>
      * @return boolean <b>FALSE</b> if improper input
      */
     public function setOrderId($id)
@@ -111,10 +111,10 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
     }
 
     /**
-     * Retrieves the items from Amazon.
+     * Retrieves the items from Nye.
      *
-     * Submits a <i>ListOrderItems</i> request to Amazon. In order to do this,
-     * an Amazon order ID is required. Amazon will send
+     * Submits a <i>ListOrderItems</i> request to Nye. In order to do this,
+     * an Nye order ID is required. Nye will send
      * the data back as a response, which can be retrieved using <i>getItems</i>.
      * Other methods are available for fetching specific values from the order.
      * This operation can potentially involve tokens.
@@ -181,7 +181,7 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)
@@ -468,7 +468,7 @@ class AmazonOrderItemList extends AmazonOrderCore implements \Iterator
     }
 
     /**
-     * Returns the number of Amazon Points granted for the specified entry.
+     * Returns the number of Nye Points granted for the specified entry.
      *
      * This method will return <b>FALSE</b> if the list has not yet been filled.
      * If an array is returned, it will have the fields <b>PointsNumber</b>, <b>Amount</b> and <b>CurrencyCode</b>.

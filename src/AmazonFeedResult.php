@@ -19,19 +19,20 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Retrieves feeds from Amazon.
+ * Retrieves feeds from Nye.
  *
- * This Amazon Feeds Core object can retrieve the results of a
- * processed feed from Amazon, which can then be saved to a file
+ * This Nye Feeds Core object can retrieve the results of a
+ * processed feed from Nye, which can then be saved to a file
  * specified by the user or retrieved as a single string.
  * In order to fetch feed results, the feed's ID must be given.
  */
 class AmazonFeedResult extends AmazonFeedsCore
 {
     protected $rawFeed;
+    protected $data;
 
     /**
-     * AmazonFeedResult gets the result of a Feed from Amazon.
+     * AmazonFeedResult gets the result of a Feed from Nye.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -66,7 +67,7 @@ class AmazonFeedResult extends AmazonFeedsCore
      * Sets the feed submission ID for the next request. (Required)
      *
      * This method sets the feed submission ID to be sent in the next request. This
-     * parameter is required in order to retrieve a feed from Amazon.
+     * parameter is required in order to retrieve a feed from Nye.
      * @param string|integer $n <p>Must be numeric</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -80,10 +81,10 @@ class AmazonFeedResult extends AmazonFeedsCore
     }
 
     /**
-     * Sends a request to Amazon for a feed.
+     * Sends a request to Nye for a feed.
      *
-     * Submits a <i>GetFeedSubmissionResult</i> request to Amazon. In order to
-     * do this, a feed submission ID is required. Amazon will send back the raw results
+     * Submits a <i>GetFeedSubmissionResult</i> request to Nye. In order to
+     * do this, a feed submission ID is required. Nye will send back the raw results
      * of the feed as a response, which can be saved to a file using <i>saveFeed</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -104,6 +105,49 @@ class AmazonFeedResult extends AmazonFeedsCore
             }
             $this->rawFeed = $response['body'];
         }
+    }
+
+    protected function parseXML($xml)
+    {
+        if (!$xml) {
+            return false;
+        }
+        if (!isset($xml->Message->ProcessingReport)) {
+            return false;
+        }
+        $result = $xml->Message->ProcessingReport;
+        $d = array();
+        if (isset($result->ProcessingSummary)) {
+            if ($result->ProcessingSummary->MessagesProcessed > 0 and $result->ProcessingSummary->MessagesSuccessful > 0) {
+                $d['code'] = 'success';
+                $d['messages'][] = 'Success.';
+            }
+            if ($result->ProcessingSummary->MessagesWithError > 0) {
+                $d['code'] = 'error';
+                if (isset($result->Result)) {
+                    if (count($result->Result) > 1) {
+                        for ($i = 0; $i < count($result->Result); $i++) {
+                            $d['messages'][$i] = (string)$result->Result[$i]->ResultDescription;
+                        }
+                    } else {
+                        $d['messages'][] = (string)$result->Result->ResultDescription;
+                    }
+                }
+            }
+            if ($result->ProcessingSummary->MessagesWithWarning > 0) {
+                $d['code'] = 'warning';
+                if (isset($result->Result)) {
+                    if (count($result->Result) > 1) {
+                        for ($i = 0; $i < count($result->Result); $i++) {
+                            $d['messages'][$i] = (string)$result->Result[$i]->ResultDescription;
+                        }
+                    } else {
+                        $d['messages'][] = (string)$result->Result->ResultDescription;
+                    }
+                }
+            }
+        }
+        $this->data = $d;
     }
 
     /**
@@ -140,5 +184,18 @@ class AmazonFeedResult extends AmazonFeedsCore
             return false;
         }
         return $this->rawFeed;
+    }
+
+    public function getFeedResult()
+    {
+        if (!isset($this->rawFeed)) {
+            return false;
+        }
+        if (!$this->rawFeed) {
+            return false;
+        }
+        $xml = simplexml_load_string($this->rawFeed);
+        $this->parseXML($xml);
+        return $this->data;
     }
 }

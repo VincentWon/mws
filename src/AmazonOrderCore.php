@@ -19,17 +19,17 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Core class for Amazon Orders API.
+ * Core class for Nye Orders API.
  *
- * This is the core class for all objects in the Amazon Orders section.
+ * This is the core class for all objects in the Nye Orders section.
  * It contains no methods in itself other than the constructor.
  */
 abstract class AmazonOrderCore extends AmazonCore
 {
     /**
-     * AmazonOrdersCore constructor sets up key information used in all Amazon Orders Core requests
+     * AmazonOrdersCore constructor sets up key information used in all Nye Orders Core requests
      *
-     * This constructor is called when initializing all objects in the Amazon Orders Core.
+     * This constructor is called when initializing all objects in the Nye Orders Core.
      * The parameters are passed by the child objects' constructors, which are
      * in turn passed to the AmazonCore constructor. See it for more information
      * on these parameters and common methods.

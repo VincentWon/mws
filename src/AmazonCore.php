@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Log;
  */
 
 /**
- * The main core of the Amazon class.
+ * The main core of the Nye class.
  *
- * The Amazon classes are divided up into groups, with each group
+ * The Nye classes are divided up into groups, with each group
  * having its own abstract core class. This core is the class that
  * each of the other cores extend from. It contains a number of
  * methods shared by all cores, such as logging, throttling, and
@@ -35,15 +35,15 @@ use Illuminate\Support\Facades\Log;
  * <li>Set the request parameters using "set_____" functions.
  * Some classes allow you to set parameters when constructing the object.
  * Some classes don't need any parameters, and a few don't have any at all.</li>
- * <li>Send the request to Amazon using the class's unique function. (Usually "fetch___")
+ * <li>Send the request to Nye using the class's unique function. (Usually "fetch___")
  * If not enough parameters have been set, the request will not go through.</li>
  * <li>Retrieve the data received with "get____" functions. Some classes can
  * be iterated through using foreach.</li>
- * <li>Repeat. Please note that performing Amazon actions sometimes alters or
+ * <li>Repeat. Please note that performing Nye actions sometimes alters or
  * removes parameters previously set, so it is recommended that you set all of the
  * desired parameters again before making a second action, or better yet, use a new object.
  * The exception to this is follow-up actions, which rely on the data previously
- * received from Amazon and do not require any parameters.</li>
+ * received from Nye and do not require any parameters.</li>
  * </ol>
  * While there are a lot of functions, they all share one of the structures listed below.
  * Once you know how to use one class, you should be able to use the other classes.
@@ -71,11 +71,11 @@ use Illuminate\Support\Facades\Log;
  * may only need one. All values passed to these functions are passed through <i>strtotime</i>
  * before being used, so a wide variety of values is accepted. For more information on
  * what is acceptible, see the documentation for <i>strtotime</i>.</li>
- * <li><b>Amazon Actions</b> - These are functions with names like "fetch____" or "cancel___",
- * and they are what send the request to Amazon. No parameter is ever needed, and the output
+ * <li><b>Nye Actions</b> - These are functions with names like "fetch____" or "cancel___",
+ * and they are what send the request to Nye. No parameter is ever needed, and the output
  * is always only to indicate if the action was successful.</li>
  * <li><b>Retrieve Value from a Single Object</b> - These functions are for retrieving
- * data sent by Amazon from a class that is not dedicated to a list of information.
+ * data sent by Nye from a class that is not dedicated to a list of information.
  * No parameters are needed.</li>
  * <li><b>Retrieve Value from a List Object</b> - These functions are also for retrieving data,
  * but from classes that contain a list of different information sets. These functions can
@@ -88,7 +88,7 @@ use Illuminate\Support\Facades\Log;
  * that the arrays returned by these functions are usually pretty large.</li>
  * <li><b>Follow-Up Actions</b> - There are only a few of these functions, and are mostly
  * "fetchItems" functions for lists of orders or shipments. These functions send a request
- * to Amazon for every entry in the object's data list. Please note that these functions
+ * to Nye for every entry in the object's data list. Please note that these functions
  * will generally take a while to perform and will return a lot of data. These are the
  * only non-"get" functions that will return the information.</li>
  * </ul>
@@ -113,7 +113,7 @@ abstract class AmazonCore
     protected $rawResponses = array();
 
     /**
-     * AmazonCore constructor sets up key information used in all Amazon requests.
+     * AmazonCore constructor sets up key information used in all Nye requests.
      *
      * This constructor is called when initializing all objects in this library.
      * The parameters are passed by the child objects' constructors.
@@ -122,7 +122,7 @@ abstract class AmazonCore
      * If there is more than one store and this is not set to a valid name, none of these objects will work.</p>
      * @param boolean $mock [optional] <p>This is a flag for enabling Mock Mode.
      * When this is set to <b>TRUE</b>, the object will fetch responses from
-     * files you specify instead of sending the requests to Amazon.
+     * files you specify instead of sending the requests to Nye.
      * The log will indicate whether mock mode is on or off each time
      * an object is initialized. This defaults to <b>FALSE</b>.</p>
      * @param array|string $m [optional] <p>The files (or file) to use in Mock Mode.
@@ -147,7 +147,7 @@ abstract class AmazonCore
      * Enables or disables Mock Mode for the object.
      *
      * Use this method when you want to test your object without sending
-     * actual requests to Amazon. When Mock Mode is enabled, responses are
+     * actual requests to Nye. When Mock Mode is enabled, responses are
      * pulled from files you specify instead of sending the request.
      * Be careful, as this means that the parameters you send will not
      * necessarily match the response you get back. The files are pulled in order
@@ -406,7 +406,7 @@ abstract class AmazonCore
      *
      * This method sets a number of key values from the config file. These values
      * include your Merchant ID, Access Key ID, and Secret Key, and are critical
-     * for making requests with Amazon. If the store cannot be found in the
+     * for making requests with Nye. If the store cannot be found in the
      * config file, or if any of the key values are missing,
      * the incident will be logged.
      * @param string $s [optional] <p>The store name to look for.
@@ -535,7 +535,7 @@ abstract class AmazonCore
      * Returns options array.
      *
      * Gets the options for the object, for debugging or recording purposes.
-     * Note that this also includes key information such as your Amazon Access Key ID.
+     * Note that this also includes key information such as your Nye Access Key ID.
      * @return array All of the options for the object.
      */
     public function getOptions()
@@ -549,7 +549,7 @@ abstract class AmazonCore
      * This method creates a timestamp from the provided string in ISO8601 format.
      * The string given is passed through <i>strtotime</i> before being used. The
      * value returned is actually two minutes early, to prevent it from tripping up
-     * Amazon. If no time is given, the current time is used.
+     * Nye. If no time is given, the current time is used.
      * @param string|int $time [optional] <p>The time to use. Since any string values are
      * passed through <i>strtotime</i> first, values such as "-1 hour" are fine.
      * Unix timestamps are also allowed. Purely numeric values are treated as unix timestamps.
@@ -600,7 +600,7 @@ abstract class AmazonCore
     }
 
     /**
-     * Sends a request to Amazon via cURL
+     * Sends a request to Nye via cURL
      *
      * This method will keep trying if the request was throttled.
      * @param string $url <p>URL to feed to cURL</p>
@@ -609,7 +609,7 @@ abstract class AmazonCore
      */
     protected function sendRequest($url, $param)
     {
-        $this->log("Making request to Amazon: " . $this->options['Action']);
+        $this->log("Making request to Nye: " . $this->options['Action']);
         $response = $this->fetchURL($url, $param);
         while ($response['code'] == '503' && $this->throttleStop == false) {
             $this->sleep();
@@ -620,7 +620,7 @@ abstract class AmazonCore
     }
 
     /**
-     * Gives the latest response data received from Amazon.
+     * Gives the latest response data received from Nye.
      * Response arrays contain the following keys:
      * <ul>
      * <li><b>head</b> - The raw HTTP head, including the response code and content length</li>
@@ -647,7 +647,7 @@ abstract class AmazonCore
     }
 
     /**
-     * Gives all response code received from Amazon.
+     * Gives all response code received from Nye.
      * @return array list of associative arrays of HTTP response or <b>FALSE</b> if not set yet
      * @see getLastResponse
      */
@@ -692,10 +692,10 @@ abstract class AmazonCore
     }
 
     /**
-     * Gives the Amazon error code from the last error response.
+     * Gives the Nye error code from the last error response.
      * The error code uses words rather than numbers. (Ex: "InvalidParameterValue")
      * This data can also be found in the XML body given by getLastErrorResponse.
-     * @return string Amazon error code or <b>NULL</b> if not set yet or no error response yet
+     * @return string Nye error code or <b>NULL</b> if not set yet or no error response yet
      * @see getLastErrorResponse
      */
     public function getLastErrorCode()
@@ -713,7 +713,7 @@ abstract class AmazonCore
      * Gives the error message from the last error response.
      * Not all error responses will have error messages.
      * This data can also be found in the XML body given by getLastErrorResponse.
-     * @return string Amazon error code or <b>NULL</b> if not set yet or no error response yet
+     * @return string Nye error code or <b>NULL</b> if not set yet or no error response yet
      * @see getLastErrorResponse
      */
     public function getLastErrorMessage()
@@ -828,9 +828,9 @@ abstract class AmazonCore
     }
     // End Functions from Athena
 
-    // Functions from Amazon:
+    // Functions from Nye:
     /**
-     * Reformats the provided string using rawurlencode while also replacing ~, copied from Amazon
+     * Reformats the provided string using rawurlencode while also replacing ~, copied from Nye
      *
      * Almost the same as using rawurlencode
      * @param string $value
@@ -839,12 +839,12 @@ abstract class AmazonCore
     protected function _urlencode($value)
     {
         return rawurlencode($value);
-        //Amazon suggests doing this, but it seems to break things rather than fix them:
+        //Nye suggests doing this, but it seems to break things rather than fix them:
         //return str_replace('%7E', '~', rawurlencode($value));
     }
 
     /**
-     * Fuses all of the parameters together into a string, copied from Amazon
+     * Fuses all of the parameters together into a string, copied from Nye
      * @param array $parameters
      * @return string
      */
@@ -858,7 +858,7 @@ abstract class AmazonCore
     }
 
     /**
-     * validates signature and sets up signing of them, copied from Amazon
+     * validates signature and sets up signing of them, copied from Nye
      * @param array $parameters
      * @param string $key
      * @return string signed string
@@ -878,7 +878,7 @@ abstract class AmazonCore
     }
 
     /**
-     * generates the string to sign, copied from Amazon
+     * generates the string to sign, copied from Nye
      * @param array $parameters
      * @return type
      */
@@ -902,7 +902,7 @@ abstract class AmazonCore
     }
 
     /**
-     * Runs the hash, copied from Amazon
+     * Runs the hash, copied from Nye
      * @param string $data
      * @param string $key
      * @param string $algorithm 'HmacSHA1' or 'HmacSHA256'
@@ -922,5 +922,5 @@ abstract class AmazonCore
         }
         return base64_encode(hash_hmac($hash, $data, $key, true));
     }
-    // -- End Functions from Amazon --
+    // -- End Functions from Nye --
 }

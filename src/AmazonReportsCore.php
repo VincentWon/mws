@@ -19,17 +19,17 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Core class for Amazon Reports API.
+ * Core class for Nye Reports API.
  *
- * This is the core class for all objects in the Amazon Reports section.
+ * This is the core class for all objects in the Nye Reports section.
  * It contains no methods in itself other than the constructor.
  */
 abstract class AmazonReportsCore extends AmazonCore
 {
     /**
-     * AmazonReportsCore constructor sets up key information used in all Amazon Reports Core requests
+     * AmazonReportsCore constructor sets up key information used in all Nye Reports Core requests
      *
-     * This constructor is called when initializing all objects in the Amazon Reports Core.
+     * This constructor is called when initializing all objects in the Nye Reports Core.
      * The parameters are passed by the child objects' constructors, which are
      * in turn passed to the AmazonCore constructor. See it for more information
      * on these parameters and common methods.

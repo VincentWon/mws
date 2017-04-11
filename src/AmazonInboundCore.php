@@ -19,17 +19,17 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Core class for Amazon Inbound Shipment API.
+ * Core class for Nye Inbound Shipment API.
  *
- * This is the core class for all objects in the Amazon Inbound section.
+ * This is the core class for all objects in the Nye Inbound section.
  * It contains no methods in itself other than the constructor.
  */
 abstract class AmazonInboundCore extends AmazonCore
 {
     /**
-     * AmazonInboundCore constructor sets up key information used in all Amazon Inbound Core requests
+     * AmazonInboundCore constructor sets up key information used in all Nye Inbound Core requests
      *
-     * This constructor is called when initializing all objects in the Amazon Inbound Core.
+     * This constructor is called when initializing all objects in the Nye Inbound Core.
      * The parameters are passed by the child objects' constructors, which are
      * in turn passed to the AmazonCore constructor. See it for more information
      * on these parameters and common methods.

@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Fetches a list of report requests from Amazon.
+ * Fetches a list of report requests from Nye.
  *
- * This Amazon Reports Core Object retrieves a list of previously requested
- * reports from Amazon. No parameters are required, but a number of filters
+ * This Nye Reports Core Object retrieves a list of previously requested
+ * reports from Nye. No parameters are required, but a number of filters
  * are available to narrow the list of report requests that are returned.
  * This object can also count the number of report requests. This object can
  * use tokens when retrieving the list.
@@ -37,7 +37,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     protected $count;
 
     /**
-     * AmazonReportRequestList fetches a list of report requests from Amazon.
+     * AmazonReportRequestList fetches a list of report requests from Nye.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -117,7 +117,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     /**
      * Removes report request ID options.
      *
-     * Use this in case you change your mind and want to remove the Report Request ID
+     * Use this in case you change your mind and want to remove the Log Request ID
      * parameters you previously set.
      */
     public function resetRequestIds()
@@ -158,7 +158,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     /**
      * Removes report type options.
      *
-     * Use this in case you change your mind and want to remove the Report Type
+     * Use this in case you change your mind and want to remove the Log Type
      * parameters you previously set.
      */
     public function resetReportTypes()
@@ -199,7 +199,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     /**
      * Removes report status options.
      *
-     * Use this in case you change your mind and want to remove the Report Status
+     * Use this in case you change your mind and want to remove the Log Status
      * parameters you previously set.
      */
     public function resetReportStatuses()
@@ -214,8 +214,8 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     /**
      * Sets the maximum response count. (Optional)
      *
-     * This method sets the maximum number of Report Requests for Amazon to return.
-     * If this parameter is not set, Amazon will only send 10 at a time.
+     * This method sets the maximum number of Log Requests for Nye to return.
+     * If this parameter is not set, Nye will only send 10 at a time.
      * @param array|string $s <p>Positive integer from 1 to 100.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -232,9 +232,9 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
      * Sets the time frame options. (Optional)
      *
      * This method sets the start and end times for the next request. If this
-     * parameter is set, Amazon will only return Report Requests that were submitted
-     * between the two times given. If these parameters are not set, Amazon will
-     * only return Report Requests that were submitted within the past 90 days.
+     * parameter is set, Nye will only return Log Requests that were submitted
+     * between the two times given. If these parameters are not set, Nye will
+     * only return Log Requests that were submitted within the past 90 days.
      * The parameters are passed through <i>strtotime</i>, so values such as "-1 hour" are fine.
      * @param string $s [optional] <p>A time string for the earliest time.</p>
      * @param string $e [optional] <p>A time string for the latest time.</p>
@@ -270,9 +270,9 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     }
 
     /**
-     * Fetches a list of Report Requests from Amazon.
+     * Fetches a list of Log Requests from Nye.
      *
-     * Submits a <i>GetReportRequestList</i> request to Amazon. Amazon will send
+     * Submits a <i>GetReportRequestList</i> request to Nye. Nye will send
      * the list back as a response, which can be retrieved using <i>getList</i>.
      * Other methods are available for fetching specific values from the list.
      * This operation can potentially involve tokens.
@@ -298,7 +298,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
         $this->checkToken($xml);
         if ($this->tokenFlag && $this->tokenUseFlag && $r === true) {
             while ($this->tokenFlag) {
-                $this->log("Recursively fetching more Report Requests");
+                $this->log("Recursively fetching more Log Requests");
                 $this->fetchRequestList(false);
             }
         }
@@ -371,7 +371,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)
@@ -405,7 +405,7 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     /**
      * Cancels the report requests that match the given parameters. Careful!
      *
-     * Submits a <i>CancelReportRequests</i> request to Amazon. Amazon will send
+     * Submits a <i>CancelReportRequests</i> request to Nye. Nye will send
      * as a response the list of feeds that were cancelled, along with the count
      * of the number of affected feeds. This data can be retrieved using the same
      * methods as with <i>fetchRequestList</i> and <i>fetchCount</i>.
@@ -430,9 +430,9 @@ class AmazonReportRequestList extends AmazonReportsCore implements \Iterator
     }
 
     /**
-     * Fetches a count of Report Requests from Amazon.
+     * Fetches a count of Log Requests from Nye.
      *
-     * Submits a <i>GetReportRequestCount</i> request to Amazon. Amazon will send
+     * Submits a <i>GetReportRequestCount</i> request to Nye. Nye will send
      * the number back as a response, which can be retrieved using <i>getCount</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
