@@ -110,7 +110,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements Iterator{
     /**
      * Removes report type options.
      * 
-     * Use this in case you change your mind and want to remove the Report Type
+     * Use this in case you change your mind and want to remove the Log Type
      * parameters you previously set.
      */
     public function resetReportTypes(){
@@ -122,7 +122,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements Iterator{
     }
     
     /**
-     * Fetches a list of Report Schedules from Amazon.
+     * Fetches a list of Log Schedules from Amazon.
      * 
      * Submits a <i>GetReportScheduleList</i> request to Amazon. Amazon will send
      * the list back as a response, which can be retrieved using <i>getList</i>.
@@ -158,7 +158,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements Iterator{
         
         if ($this->tokenFlag && $this->tokenUseFlag && $r === true){
             while ($this->tokenFlag){
-                $this->log("Recursively fetching more Report Schedules");
+                $this->log("Recursively fetching more Log Schedules");
                 $this->fetchReportList(false);
             }
             
@@ -227,7 +227,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements Iterator{
     }
     
     /**
-     * Fetches a count of Report Schedules from Amazon.
+     * Fetches a count of Log Schedules from Amazon.
      * 
      * Submits a <i>GetReportScheduleCount</i> request to Amazon. Amazon will send
      * the number back as a response, which can be retrieved using <i>getCount</i>.

@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Core class for Nye Products API.
+ * Core class for Amazon Products API.
  *
- * This is the core class for all objects in the Nye Products section.
- * It contains a few methods that all Nye Products Core objects use.
+ * This is the core class for all objects in the Amazon Products section.
+ * It contains a few methods that all Amazon Products Core objects use.
  */
 abstract class AmazonProductsCore extends AmazonCore
 {
@@ -30,9 +30,9 @@ abstract class AmazonProductsCore extends AmazonCore
     protected $index = 0;
 
     /**
-     * AmazonProductsCore constructor sets up key information used in all Nye Products Core requests
+     * AmazonProductsCore constructor sets up key information used in all Amazon Products Core requests
      *
-     * This constructor is called when initializing all objects in the Nye Products Core.
+     * This constructor is called when initializing all objects in the Amazon Products Core.
      * The parameters are passed by the child objects' constructors, which are
      * in turn passed to the AmazonCore constructor. See it for more information
      * on these parameters and common methods.
@@ -65,7 +65,7 @@ abstract class AmazonProductsCore extends AmazonCore
 
     /**
      * Sets the marketplace to search in. (Optional)
-     * Setting this option tells Nye to only return products from the given marketplace.
+     * Setting this option tells Amazon to only return products from the given marketplace.
      * If this option is not set, the current store's marketplace will be used.
      * @param string $m <p>Marketplace ID</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -83,7 +83,7 @@ abstract class AmazonProductsCore extends AmazonCore
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)

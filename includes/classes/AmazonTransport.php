@@ -27,7 +27,8 @@
  * shipment are required, such as shipment type. Use the AmazonShipment object
  * to create an inbound shipment and acquire a shipment ID.
  */
-class AmazonTransport extends AmazonInboundCore {
+class AmazonTransport extends AmazonInboundCore
+{
     protected $status;
     protected $contents;
 
@@ -47,10 +48,10 @@ class AmazonTransport extends AmazonInboundCore {
      * @param array|string $m [optional] <p>The files (or file) to use in Mock Mode.</p>
      * @param string $config [optional] <p>An alternate config file to set. Used for testing.</p>
      */
-    public function __construct($s = null, $id = null, $mock = false, $m = null, $config = null){
+    public function __construct($s = null, $id = null, $mock = false, $m = null, $config = null)
+    {
         parent::__construct($s, $mock, $m, $config);
-
-        if($id){
+        if ($id) {
             $this->setShipmentId($id);
         }
     }
@@ -60,8 +61,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $s <p>Shipment ID</p>
      * @return boolean <b>FALSE</b> if improper input
      */
-    public function setShipmentId($s){
-        if (is_string($s) && $s){
+    public function setShipmentId($s)
+    {
+        if (is_string($s) && $s) {
             $this->options['ShipmentId'] = $s;
         } else {
             return false;
@@ -76,7 +78,8 @@ class AmazonTransport extends AmazonInboundCore {
      * This parameter is removed by all other actions.
      * @param boolean $b <p>Whether or not the shipment's carrier is partnered</p>
      */
-    public function setIsPartnered($b) {
+    public function setIsPartnered($b)
+    {
         if ($b) {
             $v = 'true';
         } else {
@@ -95,12 +98,13 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $s <p>"SP" or "LTL"</p>
      * @return boolean <b>FALSE</b> if improper input
      */
-    public function setShipmentType($s) {
+    public function setShipmentType($s)
+    {
         $options = array(
             'SP',
             'LTL',
         );
-        if (in_array($s, $options)){
+        if (in_array($s, $options)) {
             $this->options['ShipmentType'] = $s;
         } else {
             $this->log('Tried to set ShipmentType to invalid value', 'Warning');
@@ -113,7 +117,8 @@ class AmazonTransport extends AmazonInboundCore {
      * The parameter to use depends on the partnered and shipment type parameters.
      * @return string|boolean parameter prefix or <b>FALSE</b> if it could not be determined
      */
-    protected function determineDetailOption() {
+    protected function determineDetailOption()
+    {
         if (!isset($this->options['IsPartnered']) || !isset($this->options['ShipmentType'])) {
             $this->log('Cannot set transport details without shipment type and partner parameters!', 'Warning');
             return false;
@@ -125,11 +130,13 @@ class AmazonTransport extends AmazonInboundCore {
             } else {
                 return $op . 'NonPartneredSmallParcelData';
             }
-        } else if ($this->options['ShipmentType'] == 'LTL') {
-            if ($this->options['IsPartnered'] == 'true') {
-                return $op . 'PartneredLtlData';
-            } else {
-                return $op . 'NonPartneredLtlData';
+        } else {
+            if ($this->options['ShipmentType'] == 'LTL') {
+                if ($this->options['IsPartnered'] == 'true') {
+                    return $op . 'PartneredLtlData';
+                } else {
+                    return $op . 'NonPartneredLtlData';
+                }
             }
         }
         $this->log('Unknown shipment type, cannot set transport details!', 'Warning');
@@ -147,14 +154,15 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $s <p>See the comment inside for a list of valid values.</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setCarrier($s){
+    public function setCarrier($s)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set carrier name because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if (is_string($s) && $s){
-            $this->options[$op.'.CarrierName'] = $s;
+        if (is_string($s) && $s) {
+            $this->options[$op . '.CarrierName'] = $s;
         } else {
             return false;
         }
@@ -203,9 +211,10 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $wu <p>Weight unit: "pounds" or "kilograms", defaults to kilograms</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setPackages($a, $du = 'centimeters', $wu = 'kilograms'){
+    public function setPackages($a, $du = 'centimeters', $wu = 'kilograms')
+    {
         if (empty($a) || !is_array($a)) {
-            $this->log("Tried to set package list to invalid values",'Warning');
+            $this->log("Tried to set package list to invalid values", 'Warning');
             return false;
         }
         $op = $this->determineDetailOption();
@@ -216,25 +225,25 @@ class AmazonTransport extends AmazonInboundCore {
         $this->resetPackages();
         $i = 1;
         foreach ($a as $x) {
-            $prefix = $op.'.PackageList.member.'.$i;
+            $prefix = $op . '.PackageList.member.' . $i;
             if (is_array($x)) {
                 if (isset($x['Length']) && isset($x['Width']) && isset($x['Height'])) {
-                    $this->options[$prefix.'.Dimensions.Length'] = $x['Length'];
-                    $this->options[$prefix.'.Dimensions.Width'] = $x['Width'];
-                    $this->options[$prefix.'.Dimensions.Height'] = $x['Height'];
-                    $this->options[$prefix.'.Dimensions.Unit'] = $du;
+                    $this->options[$prefix . '.Dimensions.Length'] = $x['Length'];
+                    $this->options[$prefix . '.Dimensions.Width'] = $x['Width'];
+                    $this->options[$prefix . '.Dimensions.Height'] = $x['Height'];
+                    $this->options[$prefix . '.Dimensions.Unit'] = $du;
                 }
                 if (isset($x['Weight'])) {
-                    $this->options[$prefix.'.Weight.Value'] = $x['Weight'];
-                    $this->options[$prefix.'.Weight.Unit'] = $wu;
+                    $this->options[$prefix . '.Weight.Value'] = $x['Weight'];
+                    $this->options[$prefix . '.Weight.Unit'] = $wu;
                 }
                 if (isset($x['TrackingId'])) {
-                    $this->options[$prefix.'.TrackingId'] = $x['TrackingId'];
+                    $this->options[$prefix . '.TrackingId'] = $x['TrackingId'];
                 }
                 $i++;
             } else {
                 $this->resetPackages();
-                $this->log("Tried to set packages with invalid array",'Warning');
+                $this->log("Tried to set packages with invalid array", 'Warning');
                 return false;
             }
         }
@@ -246,9 +255,10 @@ class AmazonTransport extends AmazonInboundCore {
      * Since package details are required, these parameters should not be removed
      * without replacing them, so this method is not public.
      */
-    protected function resetPackages() {
-        foreach($this->options as $op=>$junk){
-            if(preg_match("#PackageList#",$op)){
+    protected function resetPackages()
+    {
+        foreach ($this->options as $op => $junk) {
+            if (preg_match("#PackageList#", $op)) {
                 unset($this->options[$op]);
             }
         }
@@ -264,14 +274,15 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $s <p>PRO number for the shipment given by the carrier</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setProNumber($s){
+    public function setProNumber($s)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set PRO number because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if (is_string($s) && $s){
-            $this->options[$op.'.ProNumber'] = $s;
+        if (is_string($s) && $s) {
+            $this->options[$op . '.ProNumber'] = $s;
         } else {
             return false;
         }
@@ -290,17 +301,18 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $f <p>Fax number of the contact person, maximum 20 characters</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setContact($n, $p, $e, $f){
+    public function setContact($n, $p, $e, $f)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set contact info because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if ($n && $p && $e && $f && is_string($n) && is_string($p) && is_string($e) && is_string($f)){
-            $this->options[$op.'.Contact.Name'] = $n;
-            $this->options[$op.'.Contact.Phone'] = $p;
-            $this->options[$op.'.Contact.Email'] = $e;
-            $this->options[$op.'.Contact.Fax'] = $f;
+        if ($n && $p && $e && $f && is_string($n) && is_string($p) && is_string($e) && is_string($f)) {
+            $this->options[$op . '.Contact.Name'] = $n;
+            $this->options[$op . '.Contact.Phone'] = $p;
+            $this->options[$op . '.Contact.Email'] = $e;
+            $this->options[$op . '.Contact.Fax'] = $f;
         } else {
             return false;
         }
@@ -316,14 +328,15 @@ class AmazonTransport extends AmazonInboundCore {
      * @param int $n <p>number of boxes</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setBoxCount($n){
+    public function setBoxCount($n)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set box count because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if (is_numeric($n) && $n > 1){
-            $this->options[$op.'.BoxCount'] = $n;
+        if (is_numeric($n) && $n > 1) {
+            $this->options[$op . '.BoxCount'] = $n;
         } else {
             return false;
         }
@@ -340,14 +353,15 @@ class AmazonTransport extends AmazonInboundCore {
      * @param int $n <p>See the comment inside for a list of valid values.</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setFreightClass($n){
+    public function setFreightClass($n)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set freight class because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if (is_numeric($n) && $n){
-            $this->options[$op.'.SellerFreightClass'] = $n;
+        if (is_numeric($n) && $n) {
+            $this->options[$op . '.SellerFreightClass'] = $n;
         } else {
             return false;
         }
@@ -384,17 +398,18 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $d <p>A time string</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setReadyDate($d) {
+    public function setReadyDate($d)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set ready date because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        try{
-            $this->options[$op.'.FreightReadyDate'] = strstr($this->genTime($d), 'T', true);
-        } catch (Exception $e){
-            unset($this->options[$op.'.FreightReadyDate']);
-            $this->log('Error: '.$e->getMessage(), 'Warning');
+        try {
+            $this->options[$op . '.FreightReadyDate'] = strstr($this->genTime($d), 'T', true);
+        } catch (Exception $e) {
+            unset($this->options[$op . '.FreightReadyDate']);
+            $this->log('Error: ' . $e->getMessage(), 'Warning');
             return false;
         }
     }
@@ -419,9 +434,10 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $wu <p>Weight unit: "pounds" or "kilograms", defaults to kilograms</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setPallets($a, $du = 'centimeters', $wu = 'kilograms'){
+    public function setPallets($a, $du = 'centimeters', $wu = 'kilograms')
+    {
         if (empty($a) || !is_array($a)) {
-            $this->log("Tried to set pallet list to invalid values",'Warning');
+            $this->log("Tried to set pallet list to invalid values", 'Warning');
             return false;
         }
         $op = $this->determineDetailOption();
@@ -432,29 +448,29 @@ class AmazonTransport extends AmazonInboundCore {
         $this->resetPallets();
         $i = 1;
         foreach ($a as $x) {
-            $prefix = $op.'.PalletList.member.'.$i;
+            $prefix = $op . '.PalletList.member.' . $i;
             if (is_array($x)) {
                 if (isset($x['Length']) && isset($x['Width']) && isset($x['Height'])) {
-                    $this->options[$prefix.'.Dimensions.Length'] = $x['Length'];
-                    $this->options[$prefix.'.Dimensions.Width'] = $x['Width'];
-                    $this->options[$prefix.'.Dimensions.Height'] = $x['Height'];
-                    $this->options[$prefix.'.Dimensions.Unit'] = $du;
+                    $this->options[$prefix . '.Dimensions.Length'] = $x['Length'];
+                    $this->options[$prefix . '.Dimensions.Width'] = $x['Width'];
+                    $this->options[$prefix . '.Dimensions.Height'] = $x['Height'];
+                    $this->options[$prefix . '.Dimensions.Unit'] = $du;
                 }
                 if (isset($x['Weight'])) {
-                    $this->options[$prefix.'.Weight.Value'] = $x['Weight'];
-                    $this->options[$prefix.'.Weight.Unit'] = $wu;
+                    $this->options[$prefix . '.Weight.Value'] = $x['Weight'];
+                    $this->options[$prefix . '.Weight.Unit'] = $wu;
                 }
                 if (isset($x['IsStacked'])) {
                     if ($x['IsStacked']) {
-                        $this->options[$prefix.'.IsStacked'] = 'true';
+                        $this->options[$prefix . '.IsStacked'] = 'true';
                     } else {
-                        $this->options[$prefix.'.IsStacked'] = 'false';
+                        $this->options[$prefix . '.IsStacked'] = 'false';
                     }
                 }
                 $i++;
             } else {
                 $this->resetPallets();
-                $this->log("Tried to set pallets with invalid array",'Warning');
+                $this->log("Tried to set pallets with invalid array", 'Warning');
                 return false;
             }
         }
@@ -465,9 +481,10 @@ class AmazonTransport extends AmazonInboundCore {
      *
      * Use this in case you change your mind and want to remove the pallet parameters you previously set.
      */
-    public function resetPallets() {
-        foreach($this->options as $op=>$junk){
-            if(preg_match("#PalletList#",$op)){
+    public function resetPallets()
+    {
+        foreach ($this->options as $op => $junk) {
+            if (preg_match("#PalletList#", $op)) {
                 unset($this->options[$op]);
             }
         }
@@ -484,15 +501,16 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $u <p>"pounds" or "kilograms", defaults to kilograms</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setTotalWeight($v, $u = 'kilograms') {
+    public function setTotalWeight($v, $u = 'kilograms')
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set total weight because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if (!empty($v) && !empty($u) && is_numeric($v) && ($u == 'pounds' || $u == 'kilograms')){
-            $this->options[$op.'.TotalWeight.Value'] = $v;
-            $this->options[$op.'.TotalWeight.Unit'] = $u;
+        if (!empty($v) && !empty($u) && is_numeric($v) && ($u == 'pounds' || $u == 'kilograms')) {
+            $this->options[$op . '.TotalWeight.Value'] = $v;
+            $this->options[$op . '.TotalWeight.Unit'] = $u;
         } else {
             return false;
         }
@@ -509,15 +527,16 @@ class AmazonTransport extends AmazonInboundCore {
      * @param string $c <p>ISO 4217 currency code (ex: USD)</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
      */
-    public function setDeclaredValue($v, $c) {
+    public function setDeclaredValue($v, $c)
+    {
         $op = $this->determineDetailOption();
         if (!$op) {
             $this->log('Cannot set declared value because of the shipment type and partnered parameters.', 'Warning');
             return false;
         }
-        if (!empty($v) && !empty($c) && is_numeric($v) && is_string($c) && !is_numeric($c)){
-            $this->options[$op.'.SellerDeclaredValue.Value'] = $v;
-            $this->options[$op.'.SellerDeclaredValue.CurrencyCode'] = $c;
+        if (!empty($v) && !empty($c) && is_numeric($v) && is_string($c) && !is_numeric($c)) {
+            $this->options[$op . '.SellerDeclaredValue.Value'] = $v;
+            $this->options[$op . '.SellerDeclaredValue.CurrencyCode'] = $c;
         } else {
             return false;
         }
@@ -529,9 +548,10 @@ class AmazonTransport extends AmazonInboundCore {
      * Since transport details are required, these parameters should not be removed
      * without replacing them, so this method is not public.
      */
-    protected function resetTransportDetails() {
-        foreach($this->options as $op=>$junk){
-            if(preg_match("#TransportDetails#",$op)){
+    protected function resetTransportDetails()
+    {
+        foreach ($this->options as $op => $junk) {
+            if (preg_match("#TransportDetails#", $op)) {
                 unset($this->options[$op]);
             }
         }
@@ -543,7 +563,8 @@ class AmazonTransport extends AmazonInboundCore {
      * IsPartnered, shipment type, and all transport details.
      * @see resetTransportDetails
      */
-    protected function resetSendParams() {
+    protected function resetSendParams()
+    {
         unset($this->options['IsPartnered']);
         unset($this->options['ShipmentType']);
         $this->resetTransportDetails();
@@ -561,24 +582,25 @@ class AmazonTransport extends AmazonInboundCore {
      * @return boolean <b>FALSE</b> if something goes wrong
      * @see verifySendParams
      */
-    public function sendTransportContents() {
+    public function sendTransportContents()
+    {
         if (!$this->verifySendParams()) {
             return false;
         }
 
         $this->prepareSend();
 
-        $url = $this->urlbase.$this->urlbranch;
+        $url = $this->urlbase . $this->urlbranch;
 
         $query = $this->genQuery();
 
-        $path = $this->options['Action'].'Result';
-        if ($this->mockMode){
+        $path = $this->options['Action'] . 'Result';
+        if ($this->mockMode) {
             $xml = $this->fetchMockFile();
         } else {
-            $response = $this->sendRequest($url, array('Post'=>$query));
+            $response = $this->sendRequest($url, array('Post' => $query));
 
-            if (!$this->checkResponse($response)){
+            if (!$this->checkResponse($response)) {
                 return false;
             }
 
@@ -593,7 +615,8 @@ class AmazonTransport extends AmazonInboundCore {
      *
      * This changes key options for using <i>sendTransportContents</i>.
      */
-    protected function prepareSend() {
+    protected function prepareSend()
+    {
         $this->throttleGroup = 'PutTransportContent';
         $this->options['Action'] = 'PutTransportContent';
     }
@@ -602,19 +625,20 @@ class AmazonTransport extends AmazonInboundCore {
      * Checks to see if all of the parameters needed for <i>sendTransportContents</i> are set.
      * @return boolean <b>TRUE</b> if everything is good, <b>FALSE</b> if something is missing
      */
-    protected function verifySendParams() {
+    protected function verifySendParams()
+    {
         $m = ' must be set in order to send transport content!';
         //common requirements
         if (!array_key_exists('ShipmentId', $this->options)) {
-            $this->log('Shipment ID'.$m, 'Warning');
+            $this->log('Shipment ID' . $m, 'Warning');
             return false;
         }
         if (!array_key_exists('IsPartnered', $this->options)) {
-            $this->log('IsPartnered'.$m, 'Warning');
+            $this->log('IsPartnered' . $m, 'Warning');
             return false;
         }
         if (!array_key_exists('ShipmentType', $this->options)) {
-            $this->log('Shipment type'.$m, 'Warning');
+            $this->log('Shipment type' . $m, 'Warning');
             return false;
         }
         //requirements based on partnership and type
@@ -628,48 +652,48 @@ class AmazonTransport extends AmazonInboundCore {
         $foundContact = false;
         $foundBoxCount = false;
         $foundReady = false;
-        foreach ($this->options as $op=>$junk) {
-            if(preg_match("#CarrierName#",$op)){
+        foreach ($this->options as $op => $junk) {
+            if (preg_match("#CarrierName#", $op)) {
                 $foundCarrier = true;
             }
-            if(preg_match("#PackageList\.member\.1#",$op)){
+            if (preg_match("#PackageList\.member\.1#", $op)) {
                 $foundPackages = true;
             }
-            if(preg_match("#ProNumber#",$op)){
+            if (preg_match("#ProNumber#", $op)) {
                 $foundPro = true;
             }
-            if(preg_match("#Contact\.Name#",$op)){
+            if (preg_match("#Contact\.Name#", $op)) {
                 $foundContact = true;
             }
-            if(preg_match("#BoxCount#",$op)){
+            if (preg_match("#BoxCount#", $op)) {
                 $foundBoxCount = true;
             }
-            if(preg_match("#FreightReadyDate#",$op)){
+            if (preg_match("#FreightReadyDate#", $op)) {
                 $foundReady = true;
             }
         }
         if (!$p && !$foundCarrier) {
-            $this->log('Carrier'.$m, 'Warning');
+            $this->log('Carrier' . $m, 'Warning');
             return false;
         }
         if ($sp && !$foundPackages) {
-            $this->log('Packages'.$m, 'Warning');
+            $this->log('Packages' . $m, 'Warning');
             return false;
         }
         if (!$p && $ltl && !$foundPro) {
-            $this->log('PRO number'.$m, 'Warning');
+            $this->log('PRO number' . $m, 'Warning');
             return false;
         }
         if ($p && $ltl && !$foundContact) {
-            $this->log('Contact info'.$m, 'Warning');
+            $this->log('Contact info' . $m, 'Warning');
             return false;
         }
         if ($p && $ltl && !$foundBoxCount) {
-            $this->log('Box count'.$m, 'Warning');
+            $this->log('Box count' . $m, 'Warning');
             return false;
         }
         if ($p && $ltl && !$foundReady) {
-            $this->log('Ready date'.$m, 'Warning');
+            $this->log('Ready date' . $m, 'Warning');
             return false;
         }
 
@@ -688,7 +712,8 @@ class AmazonTransport extends AmazonInboundCore {
      * The status of the transport request can be retrieved using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
-    public function fetchTransportContent() {
+    public function fetchTransportContent()
+    {
         if (!array_key_exists('ShipmentId', $this->options)) {
             $this->log('Shipment ID must be set in order to get transport contents!', 'Warning');
             return false;
@@ -696,17 +721,17 @@ class AmazonTransport extends AmazonInboundCore {
 
         $this->prepareGetContent();
 
-        $url = $this->urlbase.$this->urlbranch;
+        $url = $this->urlbase . $this->urlbranch;
 
         $query = $this->genQuery();
 
-        $path = $this->options['Action'].'Result';
-        if ($this->mockMode){
+        $path = $this->options['Action'] . 'Result';
+        if ($this->mockMode) {
             $xml = $this->fetchMockFile();
         } else {
-            $response = $this->sendRequest($url, array('Post'=>$query));
+            $response = $this->sendRequest($url, array('Post' => $query));
 
-            if (!$this->checkResponse($response)){
+            if (!$this->checkResponse($response)) {
                 return false;
             }
 
@@ -724,7 +749,8 @@ class AmazonTransport extends AmazonInboundCore {
      * some of the parameters will be removed.
      * @see resetSendParams
      */
-    protected function prepareGetContent() {
+    protected function prepareGetContent()
+    {
         $this->throttleGroup = 'GetTransportContent';
         $this->options['Action'] = 'GetTransportContent';
         $this->resetSendParams();
@@ -741,7 +767,8 @@ class AmazonTransport extends AmazonInboundCore {
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
-    public function estimateTransport() {
+    public function estimateTransport()
+    {
         if (!array_key_exists('ShipmentId', $this->options)) {
             $this->log('Shipment ID must be set in order to estimate the transport request!', 'Warning');
             return false;
@@ -749,17 +776,17 @@ class AmazonTransport extends AmazonInboundCore {
 
         $this->prepareEstimate();
 
-        $url = $this->urlbase.$this->urlbranch;
+        $url = $this->urlbase . $this->urlbranch;
 
         $query = $this->genQuery();
 
-        $path = $this->options['Action'].'Result';
-        if ($this->mockMode){
+        $path = $this->options['Action'] . 'Result';
+        if ($this->mockMode) {
             $xml = $this->fetchMockFile();
         } else {
-            $response = $this->sendRequest($url, array('Post'=>$query));
+            $response = $this->sendRequest($url, array('Post' => $query));
 
-            if (!$this->checkResponse($response)){
+            if (!$this->checkResponse($response)) {
                 return false;
             }
 
@@ -777,7 +804,8 @@ class AmazonTransport extends AmazonInboundCore {
      * some of the parameters will be removed.
      * @see resetSendParams
      */
-    protected function prepareEstimate() {
+    protected function prepareEstimate()
+    {
         $this->throttleGroup = 'EstimateTransportRequest';
         $this->options['Action'] = 'EstimateTransportRequest';
         $this->resetSendParams();
@@ -794,7 +822,8 @@ class AmazonTransport extends AmazonInboundCore {
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
-    public function confirmTransport() {
+    public function confirmTransport()
+    {
         if (!array_key_exists('ShipmentId', $this->options)) {
             $this->log('Shipment ID must be set in order to confirm the transport request!', 'Warning');
             return false;
@@ -802,17 +831,17 @@ class AmazonTransport extends AmazonInboundCore {
 
         $this->prepareConfirm();
 
-        $url = $this->urlbase.$this->urlbranch;
+        $url = $this->urlbase . $this->urlbranch;
 
         $query = $this->genQuery();
 
-        $path = $this->options['Action'].'Result';
-        if ($this->mockMode){
+        $path = $this->options['Action'] . 'Result';
+        if ($this->mockMode) {
             $xml = $this->fetchMockFile();
         } else {
-            $response = $this->sendRequest($url, array('Post'=>$query));
+            $response = $this->sendRequest($url, array('Post' => $query));
 
-            if (!$this->checkResponse($response)){
+            if (!$this->checkResponse($response)) {
                 return false;
             }
 
@@ -830,7 +859,8 @@ class AmazonTransport extends AmazonInboundCore {
      * some of the parameters will be removed.
      * @see resetSendParams
      */
-    protected function prepareConfirm() {
+    protected function prepareConfirm()
+    {
         $this->throttleGroup = 'ConfirmTransportRequest';
         $this->options['Action'] = 'ConfirmTransportRequest';
         $this->resetSendParams();
@@ -847,7 +877,8 @@ class AmazonTransport extends AmazonInboundCore {
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
-    public function voidTransport() {
+    public function voidTransport()
+    {
         if (!array_key_exists('ShipmentId', $this->options)) {
             $this->log('Shipment ID must be set in order to void the transport request!', 'Warning');
             return false;
@@ -855,17 +886,17 @@ class AmazonTransport extends AmazonInboundCore {
 
         $this->prepareVoid();
 
-        $url = $this->urlbase.$this->urlbranch;
+        $url = $this->urlbase . $this->urlbranch;
 
         $query = $this->genQuery();
 
-        $path = $this->options['Action'].'Result';
-        if ($this->mockMode){
+        $path = $this->options['Action'] . 'Result';
+        if ($this->mockMode) {
             $xml = $this->fetchMockFile();
         } else {
-            $response = $this->sendRequest($url, array('Post'=>$query));
+            $response = $this->sendRequest($url, array('Post' => $query));
 
-            if (!$this->checkResponse($response)){
+            if (!$this->checkResponse($response)) {
                 return false;
             }
 
@@ -883,7 +914,8 @@ class AmazonTransport extends AmazonInboundCore {
      * some of the parameters will be removed.
      * @see resetSendParams
      */
-    protected function prepareVoid() {
+    protected function prepareVoid()
+    {
         $this->throttleGroup = 'VoidTransportRequest';
         $this->options['Action'] = 'VoidTransportRequest';
         $this->resetSendParams();
@@ -896,8 +928,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
-    protected function parseXml($xml) {
-        if (!$xml){
+    protected function parseXml($xml)
+    {
+        if (!$xml) {
             return false;
         }
 
@@ -920,55 +953,61 @@ class AmazonTransport extends AmazonInboundCore {
             if (isset($xml->TransportContent->TransportDetails->PartneredSmallParcelData)) {
                 //Partnered + SP
                 $d = $xml->TransportContent->TransportDetails->PartneredSmallParcelData;
-            } else if (isset($xml->TransportContent->TransportDetails->NonPartneredSmallParcelData)) {
-                //Non-Partnered + SP
-                $d = $xml->TransportContent->TransportDetails->NonPartneredSmallParcelData;
-            } else if (isset($xml->TransportContent->TransportDetails->PartneredLtlData)) {
-                //Partnered + LTL
-                $d = $xml->TransportContent->TransportDetails->PartneredLtlData;
-                $this->contents['Details']['Contact']['Name'] = (string)$d->Contact->Name;
-                $this->contents['Details']['Contact']['Phone'] = (string)$d->Contact->Phone;
-                $this->contents['Details']['Contact']['Email'] = (string)$d->Contact->Email;
-                $this->contents['Details']['Contact']['Fax'] = (string)$d->Contact->Fax;
-                $this->contents['Details']['BoxCount'] = (string)$d->BoxCount;
-                if (isset($d->SellerFreightClass)) {
-                    $this->contents['Details']['SellerFreightClass'] = (string)$d->SellerFreightClass;
-                }
-                $this->contents['Details']['FreightReadyDate'] = (string)$d->FreightReadyDate;
-                foreach ($d->PalletList->children() as $x) {
-                    $temp = array();
-                    $temp['IsStacked'] = (string)$x->IsStacked;
-                    $temp['Dimensions']['Unit'] = (string)$x->Dimensions->Unit;
-                    $temp['Dimensions']['Length'] = (string)$x->Dimensions->Length;
-                    $temp['Dimensions']['Width'] = (string)$x->Dimensions->Width;
-                    $temp['Dimensions']['Height'] = (string)$x->Dimensions->Height;
-                    if (isset($x->Weight)) {
-                        $temp['Weight']['Value'] = (string)$x->Weight->Value;
-                        $temp['Weight']['Unit'] = (string)$x->Weight->Unit;
+            } else {
+                if (isset($xml->TransportContent->TransportDetails->NonPartneredSmallParcelData)) {
+                    //Non-Partnered + SP
+                    $d = $xml->TransportContent->TransportDetails->NonPartneredSmallParcelData;
+                } else {
+                    if (isset($xml->TransportContent->TransportDetails->PartneredLtlData)) {
+                        //Partnered + LTL
+                        $d = $xml->TransportContent->TransportDetails->PartneredLtlData;
+                        $this->contents['Details']['Contact']['Name'] = (string)$d->Contact->Name;
+                        $this->contents['Details']['Contact']['Phone'] = (string)$d->Contact->Phone;
+                        $this->contents['Details']['Contact']['Email'] = (string)$d->Contact->Email;
+                        $this->contents['Details']['Contact']['Fax'] = (string)$d->Contact->Fax;
+                        $this->contents['Details']['BoxCount'] = (string)$d->BoxCount;
+                        if (isset($d->SellerFreightClass)) {
+                            $this->contents['Details']['SellerFreightClass'] = (string)$d->SellerFreightClass;
+                        }
+                        $this->contents['Details']['FreightReadyDate'] = (string)$d->FreightReadyDate;
+                        foreach ($d->PalletList->children() as $x) {
+                            $temp = array();
+                            $temp['IsStacked'] = (string)$x->IsStacked;
+                            $temp['Dimensions']['Unit'] = (string)$x->Dimensions->Unit;
+                            $temp['Dimensions']['Length'] = (string)$x->Dimensions->Length;
+                            $temp['Dimensions']['Width'] = (string)$x->Dimensions->Width;
+                            $temp['Dimensions']['Height'] = (string)$x->Dimensions->Height;
+                            if (isset($x->Weight)) {
+                                $temp['Weight']['Value'] = (string)$x->Weight->Value;
+                                $temp['Weight']['Unit'] = (string)$x->Weight->Unit;
+                            }
+                            $this->contents['Details']['PalletList'][] = $temp;
+                        }
+                        $this->contents['Details']['TotalWeight']['Value'] = (string)$d->TotalWeight->Value;
+                        $this->contents['Details']['TotalWeight']['Unit'] = (string)$d->TotalWeight->Unit;
+                        if (isset($d->SellerDeclaredValue)) {
+                            $this->contents['Details']['SellerDeclaredValue']['Value'] = (string)$d->SellerDeclaredValue->Value;
+                            $this->contents['Details']['SellerDeclaredValue']['CurrencyCode'] = (string)$d->SellerDeclaredValue->CurrencyCode;
+                        }
+                        if (isset($d->AmazonCalculatedValue)) {
+                            $this->contents['Details']['AmazonCalculatedValue']['Value'] = (string)$d->AmazonCalculatedValue->Value;
+                            $this->contents['Details']['AmazonCalculatedValue']['CurrencyCode'] = (string)$d->AmazonCalculatedValue->CurrencyCode;
+                        }
+                        $this->contents['Details']['PreviewPickupDate'] = (string)$d->PreviewPickupDate;
+                        $this->contents['Details']['PreviewDeliveryDate'] = (string)$d->PreviewDeliveryDate;
+                        $this->contents['Details']['PreviewFreightClass'] = (string)$d->PreviewFreightClass;
+                        $this->contents['Details']['AmazonReferenceId'] = (string)$d->AmazonReferenceId;
+                        $this->contents['Details']['IsBillOfLadingAvailable'] = (string)$d->IsBillOfLadingAvailable;
+                        $this->contents['Details']['CarrierName'] = (string)$d->CarrierName;
+                    } else {
+                        if (isset($xml->TransportContent->TransportDetails->NonPartneredLtlData)) {
+                            //Non-Partnered + LTL
+                            $d = $xml->TransportContent->TransportDetails->NonPartneredLtlData;
+                            $this->contents['Details']['CarrierName'] = (string)$d->CarrierName;
+                            $this->contents['Details']['ProNumber'] = (string)$d->ProNumber;
+                        }
                     }
-                    $this->contents['Details']['PalletList'][] = $temp;
                 }
-                $this->contents['Details']['TotalWeight']['Value'] = (string)$d->TotalWeight->Value;
-                $this->contents['Details']['TotalWeight']['Unit'] = (string)$d->TotalWeight->Unit;
-                if (isset($d->SellerDeclaredValue)) {
-                    $this->contents['Details']['SellerDeclaredValue']['Value'] = (string)$d->SellerDeclaredValue->Value;
-                    $this->contents['Details']['SellerDeclaredValue']['CurrencyCode'] = (string)$d->SellerDeclaredValue->CurrencyCode;
-                }
-                if (isset($d->AmazonCalculatedValue)) {
-                    $this->contents['Details']['AmazonCalculatedValue']['Value'] = (string)$d->AmazonCalculatedValue->Value;
-                    $this->contents['Details']['AmazonCalculatedValue']['CurrencyCode'] = (string)$d->AmazonCalculatedValue->CurrencyCode;
-                }
-                $this->contents['Details']['PreviewPickupDate'] = (string)$d->PreviewPickupDate;
-                $this->contents['Details']['PreviewDeliveryDate'] = (string)$d->PreviewDeliveryDate;
-                $this->contents['Details']['PreviewFreightClass'] = (string)$d->PreviewFreightClass;
-                $this->contents['Details']['AmazonReferenceId'] = (string)$d->AmazonReferenceId;
-                $this->contents['Details']['IsBillOfLadingAvailable'] = (string)$d->IsBillOfLadingAvailable;
-                $this->contents['Details']['CarrierName'] = (string)$d->CarrierName;
-            } else if (isset($xml->TransportContent->TransportDetails->NonPartneredLtlData)) {
-                //Non-Partnered + LTL
-                $d = $xml->TransportContent->TransportDetails->NonPartneredLtlData;
-                $this->contents['Details']['CarrierName'] = (string)$d->CarrierName;
-                $this->contents['Details']['ProNumber'] = (string)$d->ProNumber;
             }
             //shared by both SP structures
             if (isset($d->PackageList)) {
@@ -1015,8 +1054,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the status has not been set yet.
      * @return string|boolean status value, or <b>FALSE</b> if value not set yet
      */
-    public function getStatus(){
-        if (isset($this->status)){
+    public function getStatus()
+    {
+        if (isset($this->status)) {
             return $this->status;
         } else {
             return false;
@@ -1038,8 +1078,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @return array|boolean multi-dimensional array, or <b>FALSE</b> if data not set yet
      * @see getContentDetails
      */
-    public function getContentInfo(){
-        if (isset($this->contents)){
+    public function getContentInfo()
+    {
+        if (isset($this->contents)) {
             return $this->contents;
         } else {
             return false;
@@ -1087,8 +1128,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @see getPackageList
      * @see getPalletList
      */
-    public function getContentDetails(){
-        if (isset($this->contents['Details'])){
+    public function getContentDetails()
+    {
+        if (isset($this->contents['Details'])) {
             return $this->contents['Details'];
         } else {
             return false;
@@ -1101,8 +1143,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      */
-    public function getSellerId() {
-        if (isset($this->contents['SellerId'])){
+    public function getSellerId()
+    {
+        if (isset($this->contents['SellerId'])) {
             return $this->contents['SellerId'];
         } else {
             return false;
@@ -1116,8 +1159,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      */
-    public function getShipmentId() {
-        if (isset($this->contents['ShipmentId'])){
+    public function getShipmentId()
+    {
+        if (isset($this->contents['ShipmentId'])) {
             return $this->contents['ShipmentId'];
         } else {
             return false;
@@ -1133,8 +1177,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return boolean <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean "true" or "false", or <b>FALSE</b> if value not set yet
      */
-    public function getIsPartnered() {
-        if (isset($this->contents['IsPartnered'])){
+    public function getIsPartnered()
+    {
+        if (isset($this->contents['IsPartnered'])) {
             return $this->contents['IsPartnered'];
         } else {
             return false;
@@ -1149,8 +1194,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean "SP" or "LTL", or <b>FALSE</b> if value not set yet
      */
-    public function getShipmentType() {
-        if (isset($this->contents['ShipmentType'])){
+    public function getShipmentType()
+    {
+        if (isset($this->contents['ShipmentType'])) {
             return $this->contents['ShipmentType'];
         } else {
             return false;
@@ -1184,8 +1230,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @return array|boolean multi-dimensional array, or <b>FALSE</b> if data not set yet
      * @see setCarrier
      */
-    public function getPackageList() {
-        if (isset($this->contents['Details']['PackageList'])){
+    public function getPackageList()
+    {
+        if (isset($this->contents['Details']['PackageList'])) {
             return $this->contents['Details']['PackageList'];
         } else {
             return false;
@@ -1212,8 +1259,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return array|boolean multi-dimensional array, or <b>FALSE</b> if data not set yet
      */
-    public function getPartneredEstimate() {
-        if (isset($this->contents['Details']['PartneredEstimate'])){
+    public function getPartneredEstimate()
+    {
+        if (isset($this->contents['Details']['PartneredEstimate'])) {
             return $this->contents['Details']['PartneredEstimate'];
         } else {
             return false;
@@ -1230,8 +1278,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      * @see setCarrier
      */
-    public function getCarrier() {
-        if (isset($this->contents['Details']['CarrierName'])){
+    public function getCarrier()
+    {
+        if (isset($this->contents['Details']['CarrierName'])) {
             return $this->contents['Details']['CarrierName'];
         } else {
             return false;
@@ -1247,8 +1296,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      */
-    public function getProNumber() {
-        if (isset($this->contents['Details']['ProNumber'])){
+    public function getProNumber()
+    {
+        if (isset($this->contents['Details']['ProNumber'])) {
             return $this->contents['Details']['ProNumber'];
         } else {
             return false;
@@ -1274,8 +1324,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return array|boolean multi-dimensional array, or <b>FALSE</b> if value not set yet
      */
-    public function getContact() {
-        if (isset($this->contents['Details']['Contact'])){
+    public function getContact()
+    {
+        if (isset($this->contents['Details']['Contact'])) {
             return $this->contents['Details']['Contact'];
         } else {
             return false;
@@ -1291,8 +1342,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      */
-    public function getBoxCount() {
-        if (isset($this->contents['Details']['BoxCount'])){
+    public function getBoxCount()
+    {
+        if (isset($this->contents['Details']['BoxCount'])) {
             return $this->contents['Details']['BoxCount'];
         } else {
             return false;
@@ -1312,13 +1364,16 @@ class AmazonTransport extends AmazonInboundCore {
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      * @see setFreightClass
      */
-    public function getFreightClass() {
-        if (isset($this->contents['Details']['PreviewFreightClass'])){
+    public function getFreightClass()
+    {
+        if (isset($this->contents['Details']['PreviewFreightClass'])) {
             return $this->contents['Details']['PreviewFreightClass'];
-        } else if (isset($this->contents['Details']['SellerFreightClass'])){
-            return $this->contents['Details']['SellerFreightClass'];
         } else {
-            return false;
+            if (isset($this->contents['Details']['SellerFreightClass'])) {
+                return $this->contents['Details']['SellerFreightClass'];
+            } else {
+                return false;
+            }
         }
     }
 
@@ -1331,8 +1386,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean date in YYYY-MM-DD format, or <b>FALSE</b> if value not set yet
      */
-    public function getReadyDate() {
-        if (isset($this->contents['Details']['FreightReadyDate'])){
+    public function getReadyDate()
+    {
+        if (isset($this->contents['Details']['FreightReadyDate'])) {
             return $this->contents['Details']['FreightReadyDate'];
         } else {
             return false;
@@ -1365,8 +1421,9 @@ class AmazonTransport extends AmazonInboundCore {
      * @return array|boolean multi-dimensional array, or <b>FALSE</b> if data not set yet
      * @see setCarrier
      */
-    public function getPalletList() {
-        if (isset($this->contents['Details']['PalletList'])){
+    public function getPalletList()
+    {
+        if (isset($this->contents['Details']['PalletList'])) {
             return $this->contents['Details']['PalletList'];
         } else {
             return false;
@@ -1384,9 +1441,10 @@ class AmazonTransport extends AmazonInboundCore {
      * @param boolean $only [optional] <p>set to <b>TRUE</b> to get only the value</p>
      * @return array|string|boolean array, single value, or <b>FALSE</b> if value not set yet
      */
-    public function getTotalWeight($only = false){
-        if (isset($this->contents['Details']['TotalWeight'])){
-            if ($only){
+    public function getTotalWeight($only = false)
+    {
+        if (isset($this->contents['Details']['TotalWeight'])) {
+            if ($only) {
                 return $this->contents['Details']['TotalWeight']['Value'];
             } else {
                 return $this->contents['Details']['TotalWeight'];
@@ -1407,9 +1465,10 @@ class AmazonTransport extends AmazonInboundCore {
      * @param boolean $only [optional] <p>set to <b>TRUE</b> to get only the value</p>
      * @return array|string|boolean array, single value, or <b>FALSE</b> if value not set yet
      */
-    public function getDeclaredValue($only = false){
-        if (isset($this->contents['Details']['SellerDeclaredValue'])){
-            if ($only){
+    public function getDeclaredValue($only = false)
+    {
+        if (isset($this->contents['Details']['SellerDeclaredValue'])) {
+            if ($only) {
                 return $this->contents['Details']['SellerDeclaredValue']['Value'];
             } else {
                 return $this->contents['Details']['SellerDeclaredValue'];
@@ -1429,9 +1488,10 @@ class AmazonTransport extends AmazonInboundCore {
      * @param boolean $only [optional] <p>set to <b>TRUE</b> to get only the value</p>
      * @return array|string|boolean array, single value, or <b>FALSE</b> if value not set yet
      */
-    public function getCalculatedValue($only = false){
-        if (isset($this->contents['Details']['AmazonCalculatedValue'])){
-            if ($only){
+    public function getCalculatedValue($only = false)
+    {
+        if (isset($this->contents['Details']['AmazonCalculatedValue'])) {
+            if ($only) {
                 return $this->contents['Details']['AmazonCalculatedValue']['Value'];
             } else {
                 return $this->contents['Details']['AmazonCalculatedValue'];
@@ -1449,8 +1509,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean date in ISO 8601 format, or <b>FALSE</b> if value not set yet
      */
-    public function getPickupDate() {
-        if (isset($this->contents['Details']['PreviewPickupDate'])){
+    public function getPickupDate()
+    {
+        if (isset($this->contents['Details']['PreviewPickupDate'])) {
             return $this->contents['Details']['PreviewPickupDate'];
         } else {
             return false;
@@ -1465,8 +1526,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean date in ISO 8601 format, or <b>FALSE</b> if value not set yet
      */
-    public function getDeliveryDate() {
-        if (isset($this->contents['Details']['PreviewDeliveryDate'])){
+    public function getDeliveryDate()
+    {
+        if (isset($this->contents['Details']['PreviewDeliveryDate'])) {
             return $this->contents['Details']['PreviewDeliveryDate'];
         } else {
             return false;
@@ -1481,8 +1543,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
      */
-    public function getReferenceId() {
-        if (isset($this->contents['Details']['AmazonReferenceId'])){
+    public function getReferenceId()
+    {
+        if (isset($this->contents['Details']['AmazonReferenceId'])) {
             return $this->contents['Details']['AmazonReferenceId'];
         } else {
             return false;
@@ -1499,8 +1562,9 @@ class AmazonTransport extends AmazonInboundCore {
      * This method will return boolean <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean "true" or "false", or <b>FALSE</b> if value not set yet
      */
-    public function getIsBillOfLadingAvailable() {
-        if (isset($this->contents['Details']['IsBillOfLadingAvailable'])){
+    public function getIsBillOfLadingAvailable()
+    {
+        if (isset($this->contents['Details']['IsBillOfLadingAvailable'])) {
             return $this->contents['Details']['IsBillOfLadingAvailable'];
         } else {
             return false;

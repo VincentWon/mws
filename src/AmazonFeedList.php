@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Receives a list of feeds from Nye.
+ * Receives a list of feeds from Amazon.
  *
- * This Nye Feeds Core object can receive a list of feed submissions
- * that were previously sent to Nye. It can also fetch a count of
+ * This Amazon Feeds Core object can receive a list of feed submissions
+ * that were previously sent to Amazon. It can also fetch a count of
  * said feed submissions, or even cancel them. While no parameters are
  * required for these functions, filters such as feed ID, feed type, and
  * time frame can be set to narrow the scope of the list. This object
@@ -38,7 +38,7 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
     protected $count;
 
     /**
-     * AmazonFeedList fetches a list of Feeds from Nye.
+     * AmazonFeedList fetches a list of Feeds from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -93,7 +93,7 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
      * Sets the feed submission ID(s). (Optional)
      *
      * This method sets the list of Feed Submission IDs to be sent in the next request.
-     * Setting this parameter tells Nye to only return Feed Submissions that match
+     * Setting this parameter tells Amazon to only return Feed Submissions that match
      * the IDs in the list. If this parameter is set, all other parameters will be ignored.
      * @param array|string $s <p>A list of Feed Submission IDs, or a single ID string.</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -136,8 +136,8 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
      * Sets the feed type(s). (Optional)
      *
      * This method sets the list of Feed Types to be sent in the next request.
-     * Setting this parameter tells Nye to only return Feed Submissions that match
-     * the types in the list. If this parameter is not set, Nye will return
+     * Setting this parameter tells Amazon to only return Feed Submissions that match
+     * the types in the list. If this parameter is not set, Amazon will return
      * Feed Submissions of any type.
      * @param array|string $s <p>A list of Feed Types, or a single type string.</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -180,8 +180,8 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
      * Sets the feed status(es). (Optional)
      *
      * This method sets the list of Feed Processing Statuses to be sent in the next request.
-     * Setting this parameter tells Nye to only return Feed Submissions that match
-     * the statuses in the list. If this parameter is not set, Nye will return
+     * Setting this parameter tells Amazon to only return Feed Submissions that match
+     * the statuses in the list. If this parameter is not set, Amazon will return
      * Feed Submissions with any status.
      * @param array|string $s <p>A list of Feed Statuses, or a single status string.<br />
      * Valid values are "_UNCONFIRMED_", "_SUBMITTED_", "_IN_PROGRESS_", "_IN_SAFETY_NET_",
@@ -225,8 +225,8 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
     /**
      * Sets the maximum response count. (Optional)
      *
-     * This method sets the maximum number of Feed Submissions for Nye to return.
-     * If this parameter is not set, Nye will only send ten.
+     * This method sets the maximum number of Feed Submissions for Amazon to return.
+     * If this parameter is not set, Amazon will only send ten.
      * @param array|string $s <p>Positive integer from 1 to 100.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -243,8 +243,8 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
      * Sets the time frame options. (Optional)
      *
      * This method sets the start and end times for the next request. If this
-     * parameter is set, Nye will only return Feed Submissions that were submitted
-     * between the two times given. If these parameters are not set, Nye will
+     * parameter is set, Amazon will only return Feed Submissions that were submitted
+     * between the two times given. If these parameters are not set, Amazon will
      * only return Feed Submissions that were submitted within the past 180 days.
      * The parameters are passed through <i>strtotime</i>, so values such as "-1 hour" are fine.
      * @param string $s [optional] <p>A time string for the earliest time.</p>
@@ -275,9 +275,9 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
     }
 
     /**
-     * Fetches a list of Feed Submissions from Nye.
+     * Fetches a list of Feed Submissions from Amazon.
      *
-     * Submits a <i>GetFeedSubmissionList</i> request to Nye. Nye will send
+     * Submits a <i>GetFeedSubmissionList</i> request to Amazon. Amazon will send
      * the list back as a response, which can be retrieved using <i>getFeedList</i>.
      * Other methods are available for fetching specific values from the list.
      * This operation can potentially involve tokens.
@@ -352,7 +352,7 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)
@@ -385,9 +385,9 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
     }
 
     /**
-     * Fetches a count of Feed Submissions from Nye.
+     * Fetches a count of Feed Submissions from Amazon.
      *
-     * Submits a <i>GetFeedSubmissionCount</i> request to Nye. Nye will send
+     * Submits a <i>GetFeedSubmissionCount</i> request to Amazon. Amazon will send
      * the number back as a response, which can be retrieved using <i>getCount</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -435,7 +435,7 @@ class AmazonFeedList extends AmazonFeedsCore implements \Iterator
     /**
      * Cancels the feed submissions that match the given parameters. Careful!
      *
-     * Submits a <i>CancelFeedSubmissions</i> request to Nye. Nye will send
+     * Submits a <i>CancelFeedSubmissions</i> request to Amazon. Amazon will send
      * as a response the list of feeds that were cancelled, along with the count
      * of the number of affected feeds. This data can be retrieved using the same
      * methods as with <i>fetchFeedSubmissions</i> and <i>countFeeds</i>.

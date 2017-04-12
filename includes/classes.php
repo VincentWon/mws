@@ -17,7 +17,7 @@
  */
 
 /**
- * Autoload Amazon Classes * 
+ * Autoload Amazon Classes *
  */
 function autoloadAmazonClasses($className) {
 	$file = dirname(__FILE__).'/classes/' . $className. '.php';

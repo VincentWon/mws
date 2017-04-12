@@ -77,14 +77,14 @@ class AmazonReportAcknowledgerTest extends PHPUnit_Framework_TestCase {
         resetLog();
         $this->object->setMock(true,'acknowledgeReports.xml');
         
-        $this->assertFalse($this->object->acknowledgeReports()); //no Report ID set yet
+        $this->assertFalse($this->object->acknowledgeReports()); //no Log ID set yet
         $this->object->setReportIds('123456');
         
         $this->assertNull($this->object->acknowledgeReports());
         
         $check = parseLog();
         $this->assertEquals('Single Mock File set: acknowledgeReports.xml',$check[1]);
-        $this->assertEquals('Report IDs must be set in order to acknowledge reports!',$check[2]);
+        $this->assertEquals('Log IDs must be set in order to acknowledge reports!',$check[2]);
         $this->assertEquals('Fetched Mock File: mock/acknowledgeReports.xml',$check[3]);
         
         return $this->object;

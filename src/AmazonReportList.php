@@ -19,9 +19,9 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Fetches list of reports available from Nye.
+ * Fetches list of reports available from Amazon.
  *
- * This Nye Reports Core object retrieves a list of available on Nye.
+ * This Amazon Reports Core object retrieves a list of available on Amazon.
  * No parameters are required, but a number of filters are available to
  * narrow the returned list. It can also retrieve a count of the feeds.
  * This object can use tokens when retrieving the list.
@@ -35,7 +35,7 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     protected $reportList;
 
     /**
-     * AmazonReportList gets a list of reports from Nye.
+     * AmazonReportList gets a list of reports from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -171,8 +171,8 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     /**
      * Sets the maximum response count. (Optional)
      *
-     * This method sets the maximum number of Log Requests for Nye to return.
-     * If this parameter is not set, Nye will send 100 at a time.
+     * This method sets the maximum number of Log Requests for Amazon to return.
+     * If this parameter is not set, Amazon will send 100 at a time.
      * @param array|string $s <p>Positive integer from 1 to 100.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -215,8 +215,8 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
      * Sets the time frame options. (Optional)
      *
      * This method sets the start and end times for the next request. If this
-     * parameter is set, Nye will only return Log Requests that were submitted
-     * between the two times given. If these parameters are not set, Nye will
+     * parameter is set, Amazon will only return Log Requests that were submitted
+     * between the two times given. If these parameters are not set, Amazon will
      * only return Log Requests that were submitted within the past 90 days.
      * The parameters are passed through <i>strtotime</i>, so values such as "-1 hour" are fine.
      * @param string $s [optional] <p>A time string for the earliest time.</p>
@@ -253,9 +253,9 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     }
 
     /**
-     * Fetches a list of Reports from Nye.
+     * Fetches a list of Reports from Amazon.
      *
-     * Submits a <i>GetReportList</i> request to Nye. Nye will send
+     * Submits a <i>GetReportList</i> request to Amazon. Amazon will send
      * the list back as a response, which can be retrieved using <i>getList</i>.
      * Other methods are available for fetching specific values from the list.
      * This operation can potentially involve tokens.
@@ -330,7 +330,7 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)
@@ -356,9 +356,9 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     }
 
     /**
-     * Fetches a count of Reports from Nye.
+     * Fetches a count of Reports from Amazon.
      *
-     * Submits a <i>GetReportCount</i> request to Nye. Nye will send
+     * Submits a <i>GetReportCount</i> request to Amazon. Amazon will send
      * the count back as a response, which can be retrieved using <i>getCount</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */

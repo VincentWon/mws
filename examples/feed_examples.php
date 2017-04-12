@@ -6,7 +6,7 @@ die('This is just an example and will not work without proper store credentials.
  */
 $list=getAmazonFeedStatus();
 if ($list) {
-    echo 'Feed Status Report<hr>';
+    echo 'Feed Status Log<hr>';
     foreach ($list as $feed) {
         //these are arrays
         echo '<b>Feed ID:</b> '.$feed['FeedSubmissionId'];

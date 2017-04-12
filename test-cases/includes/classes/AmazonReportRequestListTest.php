@@ -221,7 +221,7 @@ class AmazonReportRequestListTest extends PHPUnit_Framework_TestCase {
         $check = parseLog();
         $this->assertEquals('Mock files array set.',$check[1]);
         $this->assertEquals('Fetched Mock File: mock/fetchReportRequestListToken.xml',$check[2]);
-        $this->assertEquals('Recursively fetching more Report Requests',$check[3]);
+        $this->assertEquals('Recursively fetching more Log Requests',$check[3]);
         $this->assertEquals('Fetched Mock File: mock/fetchReportRequestListToken2.xml',$check[4]);
         $this->assertFalse($this->object->hasToken());
         $o = $this->object->getOptions();

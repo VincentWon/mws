@@ -19,9 +19,9 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Sends a report request to Nye.
+ * Sends a report request to Amazon.
  *
- * This AmazonReportsCore object makes a request to Nye to generate a report.
+ * This AmazonReportsCore object makes a request to Amazon to generate a report.
  * In order to do this, a report type is required. Other parameters are also
  * available to limit the scope of the report.
  */
@@ -30,7 +30,7 @@ class AmazonReportRequest extends AmazonReportsCore
     protected $response;
 
     /**
-     * AmazonReportRequest sends a report request to Nye.
+     * AmazonReportRequest sends a report request to Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -59,7 +59,7 @@ class AmazonReportRequest extends AmazonReportsCore
      * Sets the report type. (Required)
      *
      * This method sets the report type to be sent in the next request.
-     * This parameter is required for fetching the report from Nye.
+     * This parameter is required for fetching the report from Amazon.
      * @param string|integer $s <p>See comment inside for a list of valid values.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -246,10 +246,10 @@ class AmazonReportRequest extends AmazonReportsCore
     }
 
     /**
-     * Sends a report request to Nye.
+     * Sends a report request to Amazon.
      *
-     * Submits a <i>RequestReport</i> request to Nye. In order to do this,
-     * a Log Type is required. Nye will send info back as a response,
+     * Submits a <i>RequestReport</i> request to Amazon. In order to do this,
+     * a Log Type is required. Amazon will send info back as a response,
      * which can be retrieved using <i>getResponse</i>.
      * Other methods are available for fetching specific values from the list.
      * @return boolean <b>FALSE</b> if something goes wrong
@@ -279,7 +279,7 @@ class AmazonReportRequest extends AmazonReportsCore
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)

@@ -20,7 +20,7 @@
  * Acknowledges reports on Amazon.
  * 
  * This Amazon Reports Core object updates the acknowledgement status of
- * reports on Amazon. In order to do this, at least one Report ID is
+ * reports on Amazon. In order to do this, at least one Log ID is
  * required. A list of the affected reports is returned.
  */
 class AmazonReportAcknowledger extends AmazonReportsCore implements Iterator{
@@ -67,8 +67,8 @@ class AmazonReportAcknowledger extends AmazonReportsCore implements Iterator{
     /**
      * sets the request ID(s). (Required)
      * 
-     * This method sets the list of Report IDs to be sent in the next request.
-     * @param array|string $s <p>A list of Report IDs, or a single ID string.</p>
+     * This method sets the list of Log IDs to be sent in the next request.
+     * @param array|string $s <p>A list of Log IDs, or a single ID string.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
     public function setReportIds($s){
@@ -126,14 +126,14 @@ class AmazonReportAcknowledger extends AmazonReportsCore implements Iterator{
      * Sends an acknowledgement requst to Amazon and retrieves a list of relevant reports.
      * 
      * Submits a <i>UpdateReportAcknowledgements</i> request to Amazon.
-     * In order to do this, a list of Report IDs is required. Amazon will send
+     * In order to do this, a list of Log IDs is required. Amazon will send
      * a list back as a response, which can be retrieved using <i>getList</i>.
      * Other methods are available for fetching specific values from the list.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
     public function acknowledgeReports(){
         if (!array_key_exists('ReportIdList.Id.1',$this->options)){
-            $this->log("Report IDs must be set in order to acknowledge reports!",'Warning');
+            $this->log("Log IDs must be set in order to acknowledge reports!",'Warning');
             return false;
         }
         

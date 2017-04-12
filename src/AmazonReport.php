@@ -21,9 +21,9 @@ use Storage;
  */
 
 /**
- * Fetches a report from Nye
+ * Fetches a report from Amazon
  *
- * This Nye Reports Core object retrieves the results of a report from Nye.
+ * This Amazon Reports Core object retrieves the results of a report from Amazon.
  * In order to do this, a report ID is required. The results of the report can
  * then be saved to a file.
  */
@@ -32,7 +32,7 @@ class AmazonReport extends AmazonReportsCore
     protected $rawreport;
 
     /**
-     * AmazonReport fetches a report from Nye.
+     * AmazonReport fetches a report from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -66,7 +66,7 @@ class AmazonReport extends AmazonReportsCore
      * Sets the report ID. (Required)
      *
      * This method sets the report ID to be sent in the next request.
-     * This parameter is required for fetching the report from Nye.
+     * This parameter is required for fetching the report from Amazon.
      * @param string|integer $n <p>Must be numeric</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -80,10 +80,10 @@ class AmazonReport extends AmazonReportsCore
     }
 
     /**
-     * Sends a request to Nye for a report.
+     * Sends a request to Amazon for a report.
      *
-     * Submits a <i>GetReport</i> request to Nye. In order to do this,
-     * a report ID is required. Nye will send
+     * Submits a <i>GetReport</i> request to Amazon. In order to do this,
+     * a report ID is required. Amazon will send
      * the data back as a response, which can be saved using <i>saveReport</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */

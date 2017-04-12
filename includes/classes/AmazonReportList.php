@@ -108,7 +108,7 @@ class AmazonReportList extends AmazonReportsCore implements Iterator{
     /**
      * Removes report request ID options.
      * 
-     * Use this in case you change your mind and want to remove the Report Request ID
+     * Use this in case you change your mind and want to remove the Log Request ID
      * parameters you previously set.
      */
     public function resetRequestIds(){
@@ -145,7 +145,7 @@ class AmazonReportList extends AmazonReportsCore implements Iterator{
     /**
      * Removes report type options.
      * 
-     * Use this in case you change your mind and want to remove the Report Type
+     * Use this in case you change your mind and want to remove the Log Type
      * parameters you previously set.
      */
     public function resetReportTypes(){
@@ -159,7 +159,7 @@ class AmazonReportList extends AmazonReportsCore implements Iterator{
     /**
      * Sets the maximum response count. (Optional)
      * 
-     * This method sets the maximum number of Report Requests for Amazon to return.
+     * This method sets the maximum number of Log Requests for Amazon to return.
      * If this parameter is not set, Amazon will send 100 at a time.
      * @param array|string $s <p>Positive integer from 1 to 100.</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -197,9 +197,9 @@ class AmazonReportList extends AmazonReportsCore implements Iterator{
      * Sets the time frame options. (Optional)
      * 
      * This method sets the start and end times for the next request. If this
-     * parameter is set, Amazon will only return Report Requests that were submitted
+     * parameter is set, Amazon will only return Log Requests that were submitted
      * between the two times given. If these parameters are not set, Amazon will
-     * only return Report Requests that were submitted within the past 90 days.
+     * only return Log Requests that were submitted within the past 90 days.
      * The parameters are passed through <i>strtotime</i>, so values such as "-1 hour" are fine.
      * @param string $s [optional] <p>A time string for the earliest time.</p>
      * @param string $e [optional] <p>A time string for the latest time.</p>

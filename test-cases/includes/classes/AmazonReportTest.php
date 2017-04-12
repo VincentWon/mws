@@ -60,7 +60,7 @@ class AmazonReportTest extends PHPUnit_Framework_TestCase {
         
         $check = parseLog();
         $this->assertEquals('Single Mock File set: fetchReport.xml',$check[1]);
-        $this->assertEquals('Report ID must be set in order to fetch it!',$check[2]);
+        $this->assertEquals('Log ID must be set in order to fetch it!',$check[2]);
         $this->assertEquals('Fetched Mock File: mock/fetchReport.xml',$check[3]);
         
         return $this->object;

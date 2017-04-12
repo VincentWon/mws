@@ -19,12 +19,12 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Submits feeds to Nye.
+ * Submits feeds to Amazon.
  *
- * This Nye Feeds Core object can submit feeds to Nye.
+ * This Amazon Feeds Core object can submit feeds to Amazon.
  * In order to submit a feed, the feed's contents (as direct input or from a file)
  * and feed type must be set. Once the feed has been submitted,
- * the response from Nye can be viewed with <i>getResponse</i>.
+ * the response from Amazon can be viewed with <i>getResponse</i>.
  */
 class AmazonFeed extends AmazonFeedsCore
 {
@@ -33,7 +33,7 @@ class AmazonFeed extends AmazonFeedsCore
     protected $feedMD5;
 
     /**
-     * AmazonFeed submits a Feed to Nye.
+     * AmazonFeed submits a Feed to Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -62,7 +62,7 @@ class AmazonFeed extends AmazonFeedsCore
      * Sets the Feed Content. (Required)
      *
      * Thie method sets the feed's contents from direct input.
-     * This parameter is required in order to submit a feed to Nye.
+     * This parameter is required in order to submit a feed to Amazon.
      * @param string $s <p>The contents to put in the file.</p>
      * It can be relative or absolute.</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -81,7 +81,7 @@ class AmazonFeed extends AmazonFeedsCore
      * Sets the Feed Content. (Required)
      *
      * This method loads the contents of a file to send as the feed. This
-     * parameter is required in order to submit a feed to Nye.
+     * parameter is required in order to submit a feed to Amazon.
      * @param string $path <p>The path to a file you want to use.
      * It can be relative or absolute.</p>
      */
@@ -102,8 +102,8 @@ class AmazonFeed extends AmazonFeedsCore
      * Sets the Feed Type. (Required)
      *
      * This method sets the Feed Type to be sent in the next request. This tells
-     * Nye how the Feed should be processsed.
-     * This parameter is required in order to submit a feed to Nye.
+     * Amazon how the Feed should be processsed.
+     * This parameter is required in order to submit a feed to Amazon.
      * @param string $s <p>A value from the list of valid Feed Types.
      * See the comment inside the function for the complete list.</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -144,11 +144,11 @@ class AmazonFeed extends AmazonFeedsCore
          *      Flat File Order Adjustment Feed ~ _POST_FLAT_FILE_PAYMENT_ADJUSTMENT_DATA_
          *      Flat File Order Fulfillment Feed ~ _POST_FLAT_FILE_FULFILLMENT_DATA_
          *      Flat File Invoice Confirmation Feed ~ _POST_FLAT_FILE_INVOICE_CONFIRMATION_DATA_
-         * Fulfillment By Nye Feeds (XML):
+         * Fulfillment By Amazon Feeds (XML):
          *      FBA Fulfillment Order Feed ~ _POST_FULFILLMENT_ORDER_REQUEST_DATA_
          *      FBA Fulfillment Order Cancellation Request ~ _POST_FULFILLMENT_ORDER_CANCELLATION_REQUEST_DATA_
          *      FBA Inbound Shipment Carton Information Feed ~ _POST_FBA_INBOUND_CARTON_CONTENTS_
-         * Fulfillment By Nye Feeds (Tab Delimited):
+         * Fulfillment By Amazon Feeds (Tab Delimited):
          *      Flat File FBA Fulfillment Order Feed ~ _POST_FLAT_FILE_FULFILLMENT_ORDER_REQUEST_DATA_
          *      Flat File FBA Fulfillment Order Cancellation Feed ~ _POST_FLAT_FILE_FULFILLMENT_ORDER_CANCELLATION_REQUEST_DATA_
          *      Flat File FBA Create Inbound Shipment Plan Feed ~ _POST_FLAT_FILE_FBA_CREATE_INBOUND_PLAN_
@@ -161,9 +161,9 @@ class AmazonFeed extends AmazonFeedsCore
      * Sets the request ID(s). (Optional)
      *
      * This method sets the list of Marketplace IDs to be sent in the next request.
-     * Setting this parameter tells Nye to apply the Feed to more than one
+     * Setting this parameter tells Amazon to apply the Feed to more than one
      * Marketplace. These should be IDs for Marketplaces that you are registered
-     * to sell in. If this is not set, Nye will only use the first Marketplace
+     * to sell in. If this is not set, Amazon will only use the first Marketplace
      * you are registered for.
      * @param array|string $s <p>A list of Marketplace IDs, or a single ID string.</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -210,7 +210,7 @@ class AmazonFeed extends AmazonFeedsCore
      *
      * This method sets whether or not the tab delimited feed you provide should
      * completely replace old data. Use this parameter only in exceptional cases.
-     * If this is not set, Nye assumes it to be false.
+     * If this is not set, Amazon assumes it to be false.
      * @param boolean|string $s [optional] <p>The value "true" or "false", either as
      * a boolean or a string. It defaults to "true".</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -235,11 +235,11 @@ class AmazonFeed extends AmazonFeedsCore
     }
 
     /**
-     * Submits a feed to Nye.
+     * Submits a feed to Amazon.
      *
-     * Submits a <i>SubmitFeed</i> request to Nye. In order to do this, both
+     * Submits a <i>SubmitFeed</i> request to Amazon. In order to do this, both
      * the feed's contents and feed type are required. The request will not be
-     * sent if either of these are not set. Nye will send a response back,
+     * sent if either of these are not set. Amazon will send a response back,
      * which can be retrieved using <i>getResponse</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -279,7 +279,7 @@ class AmazonFeed extends AmazonFeedsCore
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)

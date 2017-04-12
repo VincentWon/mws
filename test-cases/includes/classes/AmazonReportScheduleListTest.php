@@ -108,7 +108,7 @@ class AmazonReportScheduleListTest extends PHPUnit_Framework_TestCase {
         $check = parseLog();
         $this->assertEquals('Mock files array set.',$check[1]);
         $this->assertEquals('Fetched Mock File: mock/fetchReportScheduleListToken.xml',$check[2]);
-        $this->assertEquals('Recursively fetching more Report Schedules',$check[3]);
+        $this->assertEquals('Recursively fetching more Log Schedules',$check[3]);
         $this->assertEquals('Fetched Mock File: mock/fetchReportScheduleListToken2.xml',$check[4]);
         $this->assertFalse($this->object->hasToken());
         $o = $this->object->getOptions();

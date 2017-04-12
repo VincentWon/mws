@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Fetches a list of shipment items from Nye.
+ * Fetches a list of shipment items from Amazon.
  *
- * This Nye Inbound Core object retrieves a list of items for the given
- * shipment from Nye. In order to get the list, a shipment ID is required.
+ * This Amazon Inbound Core object retrieves a list of items for the given
+ * shipment from Amazon. In order to get the list, a shipment ID is required.
  * An optional parameter is available to narrow the returned items.
  */
 class AmazonShipmentItemList extends AmazonInboundCore implements \Iterator
@@ -34,7 +34,7 @@ class AmazonShipmentItemList extends AmazonInboundCore implements \Iterator
     protected $i = 0;
 
     /**
-     * Fetches a list of items from Nye.
+     * Fetches a list of items from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -90,7 +90,7 @@ class AmazonShipmentItemList extends AmazonInboundCore implements \Iterator
      * Sets the shipment ID. (Required)
      *
      * This method sets the shipment ID to be sent in the next request.
-     * This parameter is required for fetching the shipment's items from Nye.
+     * This parameter is required for fetching the shipment's items from Amazon.
      * @param string $n <p>Shipment ID</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -152,9 +152,9 @@ class AmazonShipmentItemList extends AmazonInboundCore implements \Iterator
     }
 
     /**
-     * Fetches a list of shipment items from Nye.
+     * Fetches a list of shipment items from Amazon.
      *
-     * Submits a <i>ListInboundShipmentItems</i> request to Nye. Nye will send
+     * Submits a <i>ListInboundShipmentItems</i> request to Amazon. Amazon will send
      * the list back as a response, which can be retrieved using <i>getItems</i>.
      * Other methods are available for fetching specific values from the list.
      * This operation can potentially involve tokens.
@@ -214,7 +214,7 @@ class AmazonShipmentItemList extends AmazonInboundCore implements \Iterator
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)

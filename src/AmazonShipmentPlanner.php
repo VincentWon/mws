@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- *  Fetches an inbound shipment plan from Nye.
+ *  Fetches an inbound shipment plan from Amazon.
  *
- * This Nye Inbound Core object retrieves a newly-generated inbound shipment
- * plan from Nye using the provided information. In order to generate a
+ * This Amazon Inbound Core object retrieves a newly-generated inbound shipment
+ * plan from Amazon using the provided information. In order to generate a
  * shipment plan, an address and a list of items are required.
  */
 class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
@@ -31,7 +31,7 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
     protected $i = 0;
 
     /**
-     * AmazonShipmentPlanner fetches a shipment plan from Nye. This is how you get a Shipment ID.
+     * AmazonShipmentPlanner fetches a shipment plan from Amazon. This is how you get a Shipment ID.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -53,7 +53,7 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
      * Sets the address. (Required)
      *
      * This method sets the shipper's address to be sent in the next request.
-     * This parameter is required for planning a fulfillment order with Nye.
+     * This parameter is required for planning a fulfillment order with Amazon.
      * The array provided should have the following fields:
      * <ul>
      * <li><b>Name</b> - max: 50 char</li>
@@ -142,7 +142,7 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
     /**
      * Sets the labeling preference. (Optional)
      *
-     * If this parameter is not set, Nye will assume SELLER_LABEL.
+     * If this parameter is not set, Amazon will assume SELLER_LABEL.
      * @param string $s <p>"SELLER_LABEL", "AMAZON_LABEL_ONLY", "AMAZON_LABEL_PREFERRED"</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -163,7 +163,7 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
      * Sets the items. (Required)
      *
      * This method sets the Fulfillment Order ID to be sent in the next request.
-     * This parameter is required for creating a fulfillment order with Nye.
+     * This parameter is required for creating a fulfillment order with Amazon.
      * The array provided should contain a list of arrays, each with the following fields:
      * <ul>
      * <li><b>SellerSKU</b> - max: 200 char</li>
@@ -263,10 +263,10 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
     }
 
     /**
-     * Sends a request to Nye to create an Inbound Shipment Plan.
+     * Sends a request to Amazon to create an Inbound Shipment Plan.
      *
-     * Submits a <i>CreateInboundShipmentPlan</i> request to Nye. In order to do this,
-     * all required parameters must be set. Nye will send back a list of Shipment Plans
+     * Submits a <i>CreateInboundShipmentPlan</i> request to Amazon. In order to do this,
+     * all required parameters must be set. Amazon will send back a list of Shipment Plans
      * as a response, which can be retrieved using <i>getPlan</i>.
      * Other methods are available for fetching specific values from the list.
      * @return boolean <b>TRUE</b> if success, <b>FALSE</b> if something goes wrong
@@ -300,7 +300,7 @@ class AmazonShipmentPlanner extends AmazonInboundCore implements \Iterator
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXML($xml)

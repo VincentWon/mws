@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Retrieves feeds from Nye.
+ * Retrieves feeds from Amazon.
  *
- * This Nye Feeds Core object can retrieve the results of a
- * processed feed from Nye, which can then be saved to a file
+ * This Amazon Feeds Core object can retrieve the results of a
+ * processed feed from Amazon, which can then be saved to a file
  * specified by the user or retrieved as a single string.
  * In order to fetch feed results, the feed's ID must be given.
  */
@@ -32,7 +32,7 @@ class AmazonFeedResult extends AmazonFeedsCore
     protected $data;
 
     /**
-     * AmazonFeedResult gets the result of a Feed from Nye.
+     * AmazonFeedResult gets the result of a Feed from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -67,7 +67,7 @@ class AmazonFeedResult extends AmazonFeedsCore
      * Sets the feed submission ID for the next request. (Required)
      *
      * This method sets the feed submission ID to be sent in the next request. This
-     * parameter is required in order to retrieve a feed from Nye.
+     * parameter is required in order to retrieve a feed from Amazon.
      * @param string|integer $n <p>Must be numeric</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -81,10 +81,10 @@ class AmazonFeedResult extends AmazonFeedsCore
     }
 
     /**
-     * Sends a request to Nye for a feed.
+     * Sends a request to Amazon for a feed.
      *
-     * Submits a <i>GetFeedSubmissionResult</i> request to Nye. In order to
-     * do this, a feed submission ID is required. Nye will send back the raw results
+     * Submits a <i>GetFeedSubmissionResult</i> request to Amazon. In order to
+     * do this, a feed submission ID is required. Amazon will send back the raw results
      * of the feed as a response, which can be saved to a file using <i>saveFeed</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */

@@ -72,16 +72,16 @@ class AmazonReportScheduleManager extends AmazonReportsCore implements Iterator{
             return false;
         }
         /*
-         * Valid valuies for Report Type
-         * Scheduled XML Order Report ~ _GET_ORDERS_DATA_
-         * Scheduled Flat File Order Report ~ _GET_FLAT_FILE_ORDERS_DATA_
-         * Flat File Order Report ~ _GET_CONVERGED_FLAT_FILE_ORDER_REPORT_DATA_
-         * Product Ads Daily Performance by SKU Report, flat File ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_DAILY_DATA_TSV_
-         * Product Ads Daily Performance by SKU Report, XML ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_DAILY_DATA_XML_
-         * Product Ads Weekly Performance by SKU Report, flat File ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_WEEKLY_DATA_TSV_
-         * Product Ads Weekly Performance by SKU Report, XML ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_WEEKLY_DATA_XML_
-         * Product Ads Monthly Performance by SKU Report, flat File ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_MONTHLY_DATA_TSV_
-         * Product Ads Monthly Performance by SKU Report, XML ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_MONTHLY_DATA_XML_
+         * Valid valuies for Log Type
+         * Scheduled XML Order Log ~ _GET_ORDERS_DATA_
+         * Scheduled Flat File Order Log ~ _GET_FLAT_FILE_ORDERS_DATA_
+         * Flat File Order Log ~ _GET_CONVERGED_FLAT_FILE_ORDER_REPORT_DATA_
+         * Product Ads Daily Performance by SKU Log, flat File ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_DAILY_DATA_TSV_
+         * Product Ads Daily Performance by SKU Log, XML ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_DAILY_DATA_XML_
+         * Product Ads Weekly Performance by SKU Log, flat File ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_WEEKLY_DATA_TSV_
+         * Product Ads Weekly Performance by SKU Log, XML ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_WEEKLY_DATA_XML_
+         * Product Ads Monthly Performance by SKU Log, flat File ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_MONTHLY_DATA_TSV_
+         * Product Ads Monthly Performance by SKU Log, XML ~ _GET_PADS_PRODUCT_PERFORMANCE_OVER_TIME_MONTHLY_DATA_XML_
          */
     }
     
@@ -154,7 +154,7 @@ class AmazonReportScheduleManager extends AmazonReportsCore implements Iterator{
      */
     public function manageReportSchedule(){
         if (!array_key_exists('ReportType',$this->options)){
-            $this->log("Report Type must be set in order to manage a report schedule!",'Warning');
+            $this->log("Log Type must be set in order to manage a report schedule!",'Warning');
             return false;
         }
         if (!array_key_exists('Schedule',$this->options)){

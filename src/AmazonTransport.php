@@ -22,7 +22,7 @@ namespace VincentWon\Mws;
 /**
  * Fetches transport info for a fulfillment shipment or updates it.
  *
- * This Nye Inbound Core object retrieves transportation information for
+ * This Amazon Inbound Core object retrieves transportation information for
  * an inbound fulfillment shipment. It can also update transport information
  * and confirm or cancel the transport request. In order to retrieve or send
  * any information, the ID of an inbound fulfillment shipment is needed.
@@ -36,7 +36,7 @@ class AmazonTransport extends AmazonInboundCore
     protected $contents;
 
     /**
-     * AmazonTransport gets or sends transport information about a shipment from Nye.
+     * AmazonTransport gets or sends transport information about a shipment from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -74,10 +74,10 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Sets the parameter for whether or not the shipment is with an Nye-partnered carrier. (Required for send)
+     * Sets the parameter for whether or not the shipment is with an Amazon-partnered carrier. (Required for send)
      *
      * The other parameters that will be required will change depending on this setting.
-     * This parameter is required for sending transport content information to Nye.
+     * This parameter is required for sending transport content information to Amazon.
      * This parameter is removed by all other actions.
      * @param boolean $b <p>Whether or not the shipment's carrier is partnered</p>
      */
@@ -96,7 +96,7 @@ class AmazonTransport extends AmazonInboundCore
      *
      * The other parameters that will be required will change depending on this setting.
      * Use "SP" if the shipment is for small parcels and "LTL" when the shipment is for pallets in a truck.
-     * This parameter is required for sending transport content information to Nye.
+     * This parameter is required for sending transport content information to Amazon.
      * This parameter is removed by all other actions.
      * @param string $s <p>"SP" or "LTL"</p>
      * @return boolean <b>FALSE</b> if improper input
@@ -150,7 +150,7 @@ class AmazonTransport extends AmazonInboundCore
      * Sets the carrier name used for the shipment. (Required for send*)
      *
      * The partnered and shipment type parameters must be set <i>before</i> setting this parameter.
-     * This parameter is required for sending transport content information to Nye when the
+     * This parameter is required for sending transport content information to Amazon when the
      * carrier is not partnered. This parameter is optional when the carrier is partnered and the
      * shipment type is set to "SP" for Small Parcel.
      * This parameter is removed by all other actions.
@@ -212,16 +212,16 @@ class AmazonTransport extends AmazonInboundCore
      * Sets the list of packages. (Required for send*)
      *
      * The partnered and shipment type parameters must be set <i>before</i> setting this parameter.
-     * This parameter is required for sending transport content information to Nye when the
+     * This parameter is required for sending transport content information to Amazon when the
      * shipment type is set to "SP" for Small Parcel.
-     * If the carrier is partnered with Nye, each package array should have the following keys:
+     * If the carrier is partnered with Amazon, each package array should have the following keys:
      * <ul>
      * <li><b>Length</b> - positive decimal number</li>
      * <li><b>Width</b> - positive decimal number</li>
      * <li><b>Height</b> - positive decimal number</li>
      * <li><b>Weight</b> - integer</li>
      * </ul>
-     * If the carrier is not partnered with Nye, each package array should have this instead:
+     * If the carrier is not partnered with Amazon, each package array should have this instead:
      * <ul>
      * <li><b>TrackingId</b> - tracking number, maximum 30 characters</li>
      * </ul>
@@ -368,7 +368,7 @@ class AmazonTransport extends AmazonInboundCore
      * The partnered and shipment type parameters must be set <i>before</i> setting this parameter.
      * This parameter is optional when the carrier is partnered and the
      * shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
-     * If this parameter is not sent, Nye will estimate the freight class on their own.
+     * If this parameter is not sent, Amazon will estimate the freight class on their own.
      * This parameter is removed by all other actions.
      * @param int $n <p>See the comment inside for a list of valid values.</p>
      * @return boolean <b>FALSE</b> if improper input or needed parameters are not set
@@ -593,11 +593,11 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Sends transport content information for a shipment with Amazon.
      *
-     * Submits a <i>PutTransportContent</i> request to Nye. In order to do this,
+     * Submits a <i>PutTransportContent</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID, shipment type, IsPartnered, and
      * various details are required. The exact details required depend on the
      * IsPartnered and shipment type parameters set.
-     * Nye will send a status back as a response, which can be retrieved
+     * Amazon will send a status back as a response, which can be retrieved
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      * @see verifySendParams
@@ -714,13 +714,13 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Gets transport content information for a shipment from Nye.
+     * Gets transport content information for a shipment from Amazon.
      *
-     * Submits a <i>GetTransportContent</i> request to Nye. In order to do this,
+     * Submits a <i>GetTransportContent</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID is required.
      * Before this action can be used, information about the transport contents
-     * must be provided to Nye using <i>sendTransportContents</i>.
-     * Nye will send data back as a response, which can be retrieved using <i>getContentInfo</i>.
+     * must be provided to Amazon using <i>sendTransportContents</i>.
+     * Amazon will send data back as a response, which can be retrieved using <i>getContentInfo</i>.
      * The status of the transport request can be retrieved using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -764,13 +764,13 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Sends a request to Nye to start estimating a shipping request.
+     * Sends a request to Amazon to start estimating a shipping request.
      *
-     * Submits a <i>EstimateTransportRequest</i> request to Nye. In order to do this,
+     * Submits a <i>EstimateTransportRequest</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID is required.
      * Before this action can be used, information about the transport contents
-     * must be provided to Nye using <i>sendTransportContents</i>.
-     * Nye will send a status back as a response, which can be retrieved
+     * must be provided to Amazon using <i>sendTransportContents</i>.
+     * Amazon will send a status back as a response, which can be retrieved
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -812,13 +812,13 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Confirms an estimated transport request with Nye.
+     * Confirms an estimated transport request with Amazon.
      *
-     * Submits a <i>ConfirmTransportRequest</i> request to Nye. In order to do this,
+     * Submits a <i>ConfirmTransportRequest</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID is required.
-     * Before this action can be used, the transport info must be estimated by Nye,
+     * Before this action can be used, the transport info must be estimated by Amazon,
      * which can be done by using <i>estimateTransport</i>.
-     * Nye will send a status back as a response, which can be retrieved
+     * Amazon will send a status back as a response, which can be retrieved
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -860,13 +860,13 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Voids a previously-confirmed transport request with Nye.
+     * Voids a previously-confirmed transport request with Amazon.
      *
-     * Submits a <i>VoidTransportRequest</i> request to Nye. In order to do this,
+     * Submits a <i>VoidTransportRequest</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID is required.
      * Before this action can be used, the transport info must have been confirmed
      * using <i>confirmTransport</i>.
-     * Nye will send a status back as a response, which can be retrieved
+     * Amazon will send a status back as a response, which can be retrieved
      * using <i>getStatus</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
@@ -911,7 +911,7 @@ class AmazonTransport extends AmazonInboundCore
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXml($xml)
@@ -1156,7 +1156,7 @@ class AmazonTransport extends AmazonInboundCore
      * Returns whether or not the transport is with a partnered carrier.
      *
      * This should be the same as the value that was sent when creating the transport request.
-     * Note that this method will return the string "false" if Nye indicates
+     * Note that this method will return the string "false" if Amazon indicates
      * that the shipment's carrier is not partnered.
      * This method will return boolean <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean "true" or "false", or <b>FALSE</b> if value not set yet
@@ -1229,7 +1229,7 @@ class AmazonTransport extends AmazonInboundCore
      * This data includes the carrier's estimated shipping charge, the deadline for when
      * the transport request must be confirmed (if it has not already been confirmed), and
      * the deadline for when the request can be voided.
-     * This value will only be set if the shipment is with an Nye-partnered carrier.
+     * This value will only be set if the shipment is with an Amazon-partnered carrier.
      * The returned array will have the following fields:
      * <ul>
      * <li><b>Amount</b> - array</li>
@@ -1295,7 +1295,7 @@ class AmazonTransport extends AmazonInboundCore
      * This data includes the carrier's estimated shipping charge, the deadline for when
      * the transport request must be confirmed (if it has not already been confirmed), and
      * the deadline for when the request can be voided.
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the value that was sent when creating the transport request.
      * The returned array will have the following fields:
@@ -1320,7 +1320,7 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the number of boxes for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the value that was sent when creating the transport request.
      * This method will return <b>FALSE</b> if the value has not been set yet.
@@ -1338,10 +1338,10 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the freight class for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the value that was sent when creating the transport request.
-     * If the freight class was not sent before, this is Nye's estimated freight class
+     * If the freight class was not sent before, this is Amazon's estimated freight class
      * based on the description of the contents.
      * See <i>setFreightClass</i> for a list of possible values.
      * This method will return <b>FALSE</b> if the value has not been set yet.
@@ -1364,7 +1364,7 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the date by which the shipment will be ready to be picked up.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the value that was sent when creating the transport request.
      * This method will return <b>FALSE</b> if the value has not been set yet.
@@ -1382,7 +1382,7 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the list of pallet data for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the data that was sent when creating the transport request.
      * The returned array may have the following fields:
@@ -1417,7 +1417,7 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the total weight for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the data that was sent when creating the transport request.
      * If an array is returned, it will have the keys <b>Value</b> and <b>Unit</b>.
@@ -1441,7 +1441,7 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the seller's declared value for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This should be the same as the data that was sent when creating the transport request.
      * If an array is returned, it will have the fields <b>Value</b> and <b>CurrencyCode</b>.
@@ -1463,9 +1463,9 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Returns Nye's calculated value for the transport request.
+     * Returns Amazon's calculated value for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * If an array is returned, it will have the fields <b>Value</b> and <b>CurrencyCode</b>.
      * This method will return <b>FALSE</b> if the value has not been set yet.
@@ -1488,7 +1488,7 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns the estimated pickup date for the transport request.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean date in ISO 8601 format, or <b>FALSE</b> if value not set yet
@@ -1503,9 +1503,9 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Returns the estimated date for when the shipment will be delivered to an Nye fulfillment center.
+     * Returns the estimated date for when the shipment will be delivered to an Amazon fulfillment center.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean date in ISO 8601 format, or <b>FALSE</b> if value not set yet
@@ -1520,9 +1520,9 @@ class AmazonTransport extends AmazonInboundCore
     }
 
     /**
-     * Returns the Nye-generated reference ID for the shipment.
+     * Returns the Amazon-generated reference ID for the shipment.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
      * This method will return <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean single value, or <b>FALSE</b> if value not set yet
@@ -1539,9 +1539,9 @@ class AmazonTransport extends AmazonInboundCore
     /**
      * Returns whether or not the bill of lading for the shipment is available.
      *
-     * This value will only be set if the shipment is with an Nye-partnered carrier and
+     * This value will only be set if the shipment is with an Amazon-partnered carrier and
      * the shipment type is set to "LTL" for Less Than Truckload/Full Truckload.
-     * Note that this method will return the string "false" if Nye indicates
+     * Note that this method will return the string "false" if Amazon indicates
      * that the bill of lading is not available.
      * This method will return boolean <b>FALSE</b> if the value has not been set yet.
      * @return string|boolean "true" or "false", or <b>FALSE</b> if value not set yet

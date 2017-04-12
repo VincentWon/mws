@@ -69,73 +69,73 @@ class AmazonReportRequest extends AmazonReportsCore{
             return false;
         }
         /*
-         * List of valid Report Types:
+         * List of valid Log Types:
          * Listings Reports:
-         *      Open Listings Report ~ _GET_FLAT_FILE_OPEN_LISTINGS_DATA_
-         *      Open Listings Report ~ _GET_MERCHANT_LISTINGS_DATA_BACK_COMPAT_
-         *      Merchant Listings Report ~ _GET_MERCHANT_LISTINGS_DATA_
-         *      Merchant Listings Lite Report ~ _GET_MERCHANT_LISTINGS_DATA_LITE_
-         *      Merchant Listings Liter Report ~ _GET_MERCHANT_LISTINGS_DATA_LITER_
-         *      Canceled Listings Report ~ _GET_MERCHANT_CANCELLED_LISTINGS_DATA_
-         *      Sold Listings Report ~ _GET_CONVERGED_FLAT_FILE_SOLD_LISTINGS_DATA_
-         *      Quality Listing Report ~ _GET_MERCHANT_LISTINGS_DEFECT_DATA_
+         *      Open Listings Log ~ _GET_FLAT_FILE_OPEN_LISTINGS_DATA_
+         *      Open Listings Log ~ _GET_MERCHANT_LISTINGS_DATA_BACK_COMPAT_
+         *      Merchant Listings Log ~ _GET_MERCHANT_LISTINGS_DATA_
+         *      Merchant Listings Lite Log ~ _GET_MERCHANT_LISTINGS_DATA_LITE_
+         *      Merchant Listings Liter Log ~ _GET_MERCHANT_LISTINGS_DATA_LITER_
+         *      Canceled Listings Log ~ _GET_MERCHANT_CANCELLED_LISTINGS_DATA_
+         *      Sold Listings Log ~ _GET_CONVERGED_FLAT_FILE_SOLD_LISTINGS_DATA_
+         *      Quality Listing Log ~ _GET_MERCHANT_LISTINGS_DEFECT_DATA_
          * Order Reports:
-         *      Unshipped Orders Report ~ _GET_FLAT_FILE_ACTIONABLE_ORDER_DATA_
-         *      Scheduled XML Order Report ~ _GET_ORDERS_DATA_
-         *      Requested Flat File Order Report ~ _GET_FLAT_FILE_ORDERS_DATA_
-         *      Flat File Order Report ~ _GET_CONVERGED_FLAT_FILE_ORDER_REPORT_DATA_
+         *      Unshipped Orders Log ~ _GET_FLAT_FILE_ACTIONABLE_ORDER_DATA_
+         *      Scheduled XML Order Log ~ _GET_ORDERS_DATA_
+         *      Requested Flat File Order Log ~ _GET_FLAT_FILE_ORDERS_DATA_
+         *      Flat File Order Log ~ _GET_CONVERGED_FLAT_FILE_ORDER_REPORT_DATA_
          * Order Tracking Reports:
-         *      Flat File Orders By Last Update Report ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_
-         *      Flat File Orders By Order Date Report ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_
-         *      XML Orders By Last Update Report ~ _GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_
-         *      XML Orders By Order Date Report ~ _GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_
+         *      Flat File Orders By Last Update Log ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_
+         *      Flat File Orders By Order Date Log ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_
+         *      XML Orders By Last Update Log ~ _GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_
+         *      XML Orders By Order Date Log ~ _GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_
          * Pending Order Reports:
-         *      Flat File Pending Orders Report ~ _GET_FLAT_FILE_PENDING_ORDERS_DATA_
-         *      XML Pending Orders Report ~ _GET_PENDING_ORDERS_DATA_
-         *      Converged Flat File Pending Orders Report ~ _GET_CONVERGED_FLAT_FILE_PENDING_ORDERS_DATA_
+         *      Flat File Pending Orders Log ~ _GET_FLAT_FILE_PENDING_ORDERS_DATA_
+         *      XML Pending Orders Log ~ _GET_PENDING_ORDERS_DATA_
+         *      Converged Flat File Pending Orders Log ~ _GET_CONVERGED_FLAT_FILE_PENDING_ORDERS_DATA_
          * Performance Reports:
-         *      Flat File Feedback Report ~ _GET_SELLER_FEEDBACK_DATA_
-         *      XML Customer Metrics Report ~ _GET_V1_SELLER_PERFORMANCE_REPORT_
+         *      Flat File Feedback Log ~ _GET_SELLER_FEEDBACK_DATA_
+         *      XML Customer Metrics Log ~ _GET_V1_SELLER_PERFORMANCE_REPORT_
          * Settlement Reports:
-         *      Flat File Settlement Report ~ _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_
-         *      XML Settlement Report ~ _GET_V2_SETTLEMENT_REPORT_DATA_XML_
-         *      Flat File V2 Settlement Report ~ _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
+         *      Flat File Settlement Log ~ _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_
+         *      XML Settlement Log ~ _GET_V2_SETTLEMENT_REPORT_DATA_XML_
+         *      Flat File V2 Settlement Log ~ _GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_
          * FBA Sales Reports:
-         *      FBA Fulfilled Shipments Report ~ _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_
-         *      Flat File All Orders Report by Last Update ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_
-         *      Flat File All Orders Report by Order Date ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_
-         *      XML All Orders Report by Last Update ~ _GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_
-         *      XML All Orders Report by Order Date ~ _GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_
-         *      FBA Customer Shipment Sales Report ~ _GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_SALES_DATA_
-         *      FBA Promotions Report ~ _GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_PROMOTION_DATA_
+         *      FBA Fulfilled Shipments Log ~ _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_
+         *      Flat File All Orders Log by Last Update ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_
+         *      Flat File All Orders Log by Order Date ~ _GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_
+         *      XML All Orders Log by Last Update ~ _GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_
+         *      XML All Orders Log by Order Date ~ _GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_
+         *      FBA Customer Shipment Sales Log ~ _GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_SALES_DATA_
+         *      FBA Promotions Log ~ _GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_PROMOTION_DATA_
          *      Customer Taxes ~ _GET_FBA_FULFILLMENT_CUSTOMER_TAXES_DATA_
          * FBA Inventory Reports:
-         *      FBA Inventory Report ~ _GET_AFN_INVENTORY_DATA_
-         *      FBA Multi-Country Inventory Report ~ _GET_AFN_INVENTORY_DATA_BY_COUNTRY_
-         *      FBA Daily Inventory History Report ~ _GET_FBA_FULFILLMENT_CURRENT_INVENTORY_DATA_
+         *      FBA Inventory Log ~ _GET_AFN_INVENTORY_DATA_
+         *      FBA Multi-Country Inventory Log ~ _GET_AFN_INVENTORY_DATA_BY_COUNTRY_
+         *      FBA Daily Inventory History Log ~ _GET_FBA_FULFILLMENT_CURRENT_INVENTORY_DATA_
          *      FBA Monthly Inventory History Repoty ~ _GET_FBA_FULFILLMENT_MONTHLY_INVENTORY_DATA_
-         *      FBA Received Inventory Report ~ _GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_
-         *      FBA Reserved Inventory Report ~ _GET_RESERVED_INVENTORY_DATA_
-         *      FBA Inventory Event Detail Report ~ _GET_FBA_FULFILLMENT_INVENTORY_SUMMARY_DATA_
-         *      FBA Inventory Adjustments Report ~ _GET_FBA_FULFILLMENT_INVENTORY_ADJUSTMENTS_DATA_
-         *      FBA Inventory Health Report ~ _GET_FBA_FULFILLMENT_INVENTORY_HEALTH_DATA_
+         *      FBA Received Inventory Log ~ _GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_
+         *      FBA Reserved Inventory Log ~ _GET_RESERVED_INVENTORY_DATA_
+         *      FBA Inventory Event Detail Log ~ _GET_FBA_FULFILLMENT_INVENTORY_SUMMARY_DATA_
+         *      FBA Inventory Adjustments Log ~ _GET_FBA_FULFILLMENT_INVENTORY_ADJUSTMENTS_DATA_
+         *      FBA Inventory Health Log ~ _GET_FBA_FULFILLMENT_INVENTORY_HEALTH_DATA_
          *      FBA Manage Inventory ~ _GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_
          *      FBA Manage Inventory - Archived ~ _GET_FBA_MYI_ALL_INVENTORY_DATA_
-         *      FBA Cross-Border Inventory Movement Report ~ _GET_FBA_FULFILLMENT_CROSS_BORDER_INVENTORY_MOVEMENT_DATA_
-         *      FBA Inbound Compliance Report ~ _GET_FBA_FULFILLMENT_INBOUND_NONCOMPLIANCE_DATA_
+         *      FBA Cross-Border Inventory Movement Log ~ _GET_FBA_FULFILLMENT_CROSS_BORDER_INVENTORY_MOVEMENT_DATA_
+         *      FBA Inbound Compliance Log ~ _GET_FBA_FULFILLMENT_INBOUND_NONCOMPLIANCE_DATA_
          * FBA Payments Reports:
-         *      FBA Fee Preview Report ~ _GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA_
-         *      FBA Reimbursements Report ~ _GET_FBA_REIMBURSEMENTS_DATA_
+         *      FBA Fee Preview Log ~ _GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA_
+         *      FBA Reimbursements Log ~ _GET_FBA_REIMBURSEMENTS_DATA_
          * FBA Customer Concessions Reports:
-         *      FBA Returns Report ~ _GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_
-         *      FBA Replacements Report ~ _GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_REPLACEMENT_DATA_
+         *      FBA Returns Log ~ _GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_
+         *      FBA Replacements Log ~ _GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_REPLACEMENT_DATA_
          * FBA Removals Reports:
-         *      FBA Recommended Removal Report ~ _GET_FBA_RECOMMENDED_REMOVAL_DATA_
-         *      FBA Removal Order Detail Report ~ _GET_FBA_FULFILLMENT_REMOVAL_ORDER_DETAIL_DATA_
-         *      FBA Removal Shipment Detail Report ~ _GET_FBA_FULFILLMENT_REMOVAL_SHIPMENT_DETAIL_DATA_
+         *      FBA Recommended Removal Log ~ _GET_FBA_RECOMMENDED_REMOVAL_DATA_
+         *      FBA Removal Order Detail Log ~ _GET_FBA_FULFILLMENT_REMOVAL_ORDER_DETAIL_DATA_
+         *      FBA Removal Shipment Detail Log ~ _GET_FBA_FULFILLMENT_REMOVAL_SHIPMENT_DETAIL_DATA_
          * Other:
-         *      Sales Tax Report ~ _GET_FLAT_FILE_SALES_TAX_DATA_
-         *      Browse Tree Report ~ _GET_XML_BROWSE_TREE_DATA_
+         *      Sales Tax Log ~ _GET_FLAT_FILE_SALES_TAX_DATA_
+         *      Browse Tree Log ~ _GET_XML_BROWSE_TREE_DATA_
          */
     }
     
@@ -237,14 +237,14 @@ class AmazonReportRequest extends AmazonReportsCore{
      * Sends a report request to Amazon.
      * 
      * Submits a <i>RequestReport</i> request to Amazon. In order to do this,
-     * a Report Type is required. Amazon will send info back as a response,
+     * a Log Type is required. Amazon will send info back as a response,
      * which can be retrieved using <i>getResponse</i>.
      * Other methods are available for fetching specific values from the list.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
     public function requestReport(){
         if (!array_key_exists('ReportType',$this->options)){
-            $this->log("Report Type must be set in order to request a report!",'Warning');
+            $this->log("Log Type must be set in order to request a report!",'Warning');
             return false;
         }
         

@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Submits a shipment to Nye or updates it.
+ * Submits a shipment to Amazon or updates it.
  *
- * This Nye Inbound Core object submits a request to create an inbound
- * shipment with Nye. It can also update existing shipments. In order to
+ * This Amazon Inbound Core object submits a request to create an inbound
+ * shipment with Amazon. It can also update existing shipments. In order to
  * create or update a shipment, information from a Shipment Plan is required.
  * Use the AmazonShipmentPlanner object to retrieve this information.
  */
@@ -31,7 +31,7 @@ class AmazonShipment extends AmazonInboundCore
     protected $shipmentId;
 
     /**
-     * AmazonShipment ubmits a shipment to Nye or updates it.
+     * AmazonShipment ubmits a shipment to Amazon or updates it.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -98,7 +98,7 @@ class AmazonShipment extends AmazonInboundCore
      * Sets the address. (Required)
      *
      * This method sets the shipper's address to be sent in the next request.
-     * This parameter is required for creating a fulfillment order with Nye.
+     * This parameter is required for creating a fulfillment order with Amazon.
      * The array provided should have the following fields:
      * <ul>
      * <li><b>Name</b> - max: 50 char</li>
@@ -197,7 +197,7 @@ class AmazonShipment extends AmazonInboundCore
      * Sets the items. (Required)
      *
      * This method sets the Fulfillment Order ID to be sent in the next request.
-     * This parameter is required for creating a fulfillment order with Nye.
+     * This parameter is required for creating a fulfillment order with Amazon.
      * The array provided should contain a list of arrays, each with the following fields:
      * <ul>
      * <li><b>SellerSKU</b> - max: 50 char</li>
@@ -318,7 +318,7 @@ class AmazonShipment extends AmazonInboundCore
 
     /**
      * Set the shipment BoxContentsSource
-     * If NONE, the box contents will be manually processed by Nye.
+     * If NONE, the box contents will be manually processed by Amazon.
      * If FEED, the box contents are detailed in the _POST_FBA_INBOUND_CARTON_CONTENTS_ feed.
      * If 2D_BARCODE, the box will need to have a 2D barcode with box contents affixed to the outside.
      * @param $s
@@ -334,11 +334,11 @@ class AmazonShipment extends AmazonInboundCore
     }
 
     /**
-     * Sends a request to Nye to create an Inbound Shipment.
+     * Sends a request to Amazon to create an Inbound Shipment.
      *
-     * Submits a <i>CreateInboundShipment</i> request to Nye. In order to do this,
+     * Submits a <i>CreateInboundShipment</i> request to Amazon. In order to do this,
      * all parameters must be set. Data for these headers can be generated using an
-     * <i>AmazonShipmentPlanner</i> object. Nye will send back the Shipment ID
+     * <i>AmazonShipmentPlanner</i> object. Amazon will send back the Shipment ID
      * as a response, which can be retrieved using <i>getShipmentId</i>.
      * @return boolean <b>TRUE</b> if success, <b>FALSE</b> if something goes wrong
      */
@@ -383,11 +383,11 @@ class AmazonShipment extends AmazonInboundCore
     }
 
     /**
-     * Sends a request to Nye to create an Inbound Shipment.
+     * Sends a request to Amazon to create an Inbound Shipment.
      *
-     * Submits a <i>UpdateInboundShipment</i> request to Nye. In order to do this,
+     * Submits a <i>UpdateInboundShipment</i> request to Amazon. In order to do this,
      * all parameters must be set. Data for these headers can be generated using an
-     * <i>AmazonShipmentPlanner</i> object. Nye will send back the Shipment ID
+     * <i>AmazonShipmentPlanner</i> object. Amazon will send back the Shipment ID
      * as a response, which can be retrieved using <i>getShipmentId</i>.
      * @return boolean <b>TRUE</b> if success, <b>FALSE</b> if something goes wrong
      */

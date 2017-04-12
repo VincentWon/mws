@@ -21,7 +21,7 @@ namespace VincentWon\Mws;
 /**
  * Fetches documents for a fulfillment shipment.
  *
- * This Nye Inbound Core object retrieves documents for an inbound
+ * This Amazon Inbound Core object retrieves documents for an inbound
  * fulfillment shipment. Documents are stored in PDF format. In order to
  * retrieve any documents, the ID of an inbound fulfillment shipment is needed.
  * In order to fetch labels, the paper type must be specified. Use the
@@ -33,7 +33,7 @@ class AmazonTransportDocument extends AmazonInboundCore
     protected $checksum;
 
     /**
-     * AmazonShipmentDocument gets documents for a shipment from Nye.
+     * AmazonShipmentDocument gets documents for a shipment from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -73,7 +73,7 @@ class AmazonTransportDocument extends AmazonInboundCore
     /**
      * Sets the page type. (Required for labels)
      *
-     * This parameter is required for fetching label documents from Nye.
+     * This parameter is required for fetching label documents from Amazon.
      * @param string $s <p>See the comment inside for a list of valid values.</p>
      * @return boolean <b>FALSE</b> if improper input
      */
@@ -152,11 +152,11 @@ class AmazonTransportDocument extends AmazonInboundCore
     }
 
     /**
-     * Gets a document containing package labels for a shipment from Nye.
+     * Gets a document containing package labels for a shipment from Amazon.
      *
-     * Submits a <i>GetUniquePackageLabels</i> request to Nye. In order to do this,
+     * Submits a <i>GetUniquePackageLabels</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID and list of package IDs are required.
-     * Nye will send a document back as a response, which can be retrieved using <i>getDocument</i>.
+     * Amazon will send a document back as a response, which can be retrieved using <i>getDocument</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
     public function fetchPackageLabels()
@@ -202,11 +202,11 @@ class AmazonTransportDocument extends AmazonInboundCore
     }
 
     /**
-     * Gets a document containing package labels for a shipment from Nye.
+     * Gets a document containing package labels for a shipment from Amazon.
      *
-     * Submits a <i>GetPalletLabels</i> request to Nye. In order to do this,
+     * Submits a <i>GetPalletLabels</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID and the number of pallets are required.
-     * Nye will send a document back as a response, which can be retrieved using <i>getDocument</i>.
+     * Amazon will send a document back as a response, which can be retrieved using <i>getDocument</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
     public function fetchPalletLabels()
@@ -252,11 +252,11 @@ class AmazonTransportDocument extends AmazonInboundCore
     }
 
     /**
-     * Gets a bill of lading document for a shipment from Nye.
+     * Gets a bill of lading document for a shipment from Amazon.
      *
-     * Submits a <i>GetBillOfLading</i> request to Nye. In order to do this,
+     * Submits a <i>GetBillOfLading</i> request to Amazon. In order to do this,
      * a fulfillment shipment ID for a Less Than Truckload/Full Truckload shipment is required.
-     * Nye will send a document back as a response, which can be retrieved using <i>getDocument</i>.
+     * Amazon will send a document back as a response, which can be retrieved using <i>getDocument</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
     public function fetchBillOfLading()
@@ -302,7 +302,7 @@ class AmazonTransportDocument extends AmazonInboundCore
      * Parses XML response into array.
      *
      * This is what reads the response XML and converts it into an array.
-     * @param SimpleXMLElement $xml <p>The XML response from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML response from Amazon.</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     protected function parseXml($xml)

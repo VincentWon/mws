@@ -19,10 +19,10 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Contains Nye product data.
+ * Contains Amazon product data.
  *
- * This Nye Products Core object acts as a container for data fetched by
- * other Products Core objects. It has no Nye functions in itself.
+ * This Amazon Products Core object acts as a container for data fetched by
+ * other Products Core objects. It has no Amazon functions in itself.
  */
 class AmazonProduct extends AmazonProductsCore
 {
@@ -38,7 +38,7 @@ class AmazonProduct extends AmazonProductsCore
      * so be careful when setting up the object.
      * @param string $s [optional] <p>Name for the store you want to use.
      * This parameter is optional if only one store is defined in the config file.</p>
-     * @param SimpleXMLElement $data [optional] <p>XML data from Nye to be parsed.</p>
+     * @param SimpleXMLElement $data [optional] <p>XML data from Amazon to be parsed.</p>
      * @param boolean $mock [optional] <p>This is a flag for enabling Mock Mode.
      * This defaults to <b>FALSE</b>.</p>
      * @param array|string $m [optional] <p>The files (or file) to use in Mock Mode.</p>
@@ -55,7 +55,7 @@ class AmazonProduct extends AmazonProductsCore
 
     /**
      * Takes in XML data and converts it to an array for the object to use.
-     * @param SimpleXMLElement $xml <p>XML Product data from Nye</p>
+     * @param SimpleXMLElement $xml <p>XML Product data from Amazon</p>
      * @return boolean <b>FALSE</b> if no XML data is found
      */
     public function loadXML($xml)
@@ -259,7 +259,7 @@ class AmazonProduct extends AmazonProductsCore
 
     /**
      * Takes in XML data for Categories and parses it for the object to use
-     * @param SimpleXMLElement $xml <p>The XML data from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML data from Amazon.</p>
      * @return boolean <b>FALSE</b> if no valid XML data is found
      */
     protected function loadCategories($xml)
@@ -277,7 +277,7 @@ class AmazonProduct extends AmazonProductsCore
 
     /**
      * Takes in XML data for lowest-priced offers and parses it for the object to use
-     * @param SimpleXMLElement $xml <p>The XML data from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML data from Amazon.</p>
      * @return boolean <b>FALSE</b> if no valid XML data is found
      */
     protected function loadLowestPricedOfferXml($xml)
@@ -408,7 +408,7 @@ class AmazonProduct extends AmazonProductsCore
      * The returned array will have the fields <b>ProductCategoryId</b> and
      * <b>ProductCategoryName</b>, as well as maybe a <b>Parent</b> field with the same
      * structure as the array containing it.
-     * @param SimpleXMLElement $xml <p>The XML data from Nye.</p>
+     * @param SimpleXMLElement $xml <p>The XML data from Amazon.</p>
      * @return array Recursive, multi-dimensional array
      */
     protected function genHierarchy($xml)

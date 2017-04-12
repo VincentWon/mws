@@ -71,7 +71,7 @@ class AmazonReportScheduleManagerTest extends PHPUnit_Framework_TestCase {
         
         $check = parseLog();
         $this->assertEquals('Single Mock File set: manageReportSchedule.xml',$check[1]);
-        $this->assertEquals('Report Type must be set in order to manage a report schedule!',$check[2]);
+        $this->assertEquals('Log Type must be set in order to manage a report schedule!',$check[2]);
         $this->assertEquals('Schedule must be set in order to manage a report schedule!',$check[3]);
         $this->assertEquals('Fetched Mock File: mock/manageReportSchedule.xml',$check[4]);
         

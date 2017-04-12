@@ -19,9 +19,9 @@ namespace VincentWon\Mws;
  */
 
 /**
- * Fetches list of products from Nye
+ * Fetches list of products from Amazon
  *
- * This Nye Products Core object retrieves a list of products from Nye
+ * This Amazon Products Core object retrieves a list of products from Amazon
  * that match the given product IDs. In order to do this, both the ID type
  * and product ID(s) must be given.
  */
@@ -30,7 +30,7 @@ class AmazonProductList extends AmazonProductsCore implements \Iterator
     protected $i = 0;
 
     /**
-     * AmazonProductList fetches a list of products from Nye.
+     * AmazonProductList fetches a list of products from Amazon.
      *
      * The parameters are passed to the parent constructor, which are
      * in turn passed to the AmazonCore constructor. See it for more information
@@ -109,9 +109,9 @@ class AmazonProductList extends AmazonProductsCore implements \Iterator
     }
 
     /**
-     * Fetches a list of products from Nye.
+     * Fetches a list of products from Amazon.
      *
-     * Submits a <i>GetMatchingProductForId</i> request to Nye. Nye will send
+     * Submits a <i>GetMatchingProductForId</i> request to Amazon. Amazon will send
      * the list back as a response, which can be retrieved using <i>getProduct</i>.
      * @return boolean <b>FALSE</b> if something goes wrong
      */
