@@ -1,4 +1,5 @@
 <?php
+
 namespace VincentWon\Mws;
 
 /**
@@ -50,11 +51,21 @@ abstract class AmazonProductsCore extends AmazonCore
             $this->urlbranch = 'Products/' . $this->env['AMAZON_VERSION_PRODUCTS'];
             $this->options['Version'] = $this->env['AMAZON_VERSION_PRODUCTS'];
         }
-        //set the store's marketplace as the default
-        if (isset($this->config['store'][$this->storeName])
-            && array_key_exists('marketplaceId', $this->config['store'][$this->storeName])
+        /** original
+         * //set the store's marketplace as the default
+         * if (isset($this->config['store'][$this->storeName])
+         * && array_key_exists('marketplaceId', $this->config['store'][$this->storeName])
+         * ) {
+         * $this->setMarketplace($this->config['store'][$this->storeName]['marketplaceId']);
+         * } else {
+         * $this->log("Marketplace ID is missing", 'Urgent');
+         * }
+         */
+
+        //Vincent rework
+        if (!empty($this->store) && array_key_exists('marketplaceId', $this->store)
         ) {
-            $this->setMarketplace($this->config['store'][$this->storeName]['marketplaceId']);
+            $this->setMarketplace($this->store['marketplaceId']);
         } else {
             $this->log("Marketplace ID is missing", 'Urgent');
         }
@@ -102,7 +113,8 @@ abstract class AmazonProductsCore extends AmazonCore
             if (isset($x->Products)) {
                 foreach ($x->Products->children() as $z) {
                     $this->productList[$this->index] = new AmazonProduct(
-                        $this->storeName,
+//                        $this->storeName,
+                        $this->store,//Vincent rework
                         $z,
                         $this->mockMode,
                         $this->mockFiles,
@@ -121,7 +133,8 @@ abstract class AmazonProductsCore extends AmazonCore
                     'GetLowestPricedOffersForASINResult'
                 ))) {
                     $this->productList[$this->index] = new AmazonProduct(
-                        $this->storeName,
+//                        $this->storeName,
+                        $this->store,//Vincent rework
                         $x,
                         $this->mockMode,
                         $this->mockFiles,
@@ -139,7 +152,8 @@ abstract class AmazonProductsCore extends AmazonCore
                             $this->log("Special case: " . $z->getName(), 'Warning');
                         } else {
                             $this->productList[$this->index] = new AmazonProduct(
-                                $this->storeName,
+//                        $this->storeName,
+                                $this->store,//Vincent rework
                                 $z,
                                 $this->mockMode,
                                 $this->mockFiles,

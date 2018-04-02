@@ -1,4 +1,5 @@
 <?php
+
 namespace VincentWon\Mws;
 
 /**
@@ -231,10 +232,22 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
                 unset($this->options[$op]);
             }
         }
-        $store = $this->config['store'];
+        /**
+         * original
+         *
+         * $store = $this->config['store'];
+         * //reset to store's default marketplace
+         * if (isset($store[$this->storeName]) && array_key_exists('marketplaceId', $store[$this->storeName])) {
+         * $this->options['MarketplaceId.Id.1'] = $store[$this->storeName]['marketplaceId'];
+         * } else {
+         * $this->log("Marketplace ID is missing", 'Urgent');
+         * }
+         */
+
+        //Vincent rework
         //reset to store's default marketplace
-        if (isset($store[$this->storeName]) && array_key_exists('marketplaceId', $store[$this->storeName])) {
-            $this->options['MarketplaceId.Id.1'] = $store[$this->storeName]['marketplaceId'];
+        if (!empty($this->store) && array_key_exists('marketplaceId', $this->store)) {
+            $this->options['MarketplaceId.Id.1'] = $this->store['marketplaceId'];
         } else {
             $this->log("Marketplace ID is missing", 'Urgent');
         }
@@ -514,7 +527,8 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
                 break;
             }
             $this->orderList[$this->index] = new AmazonOrder(
-                $this->storeName,
+//                $this->storeName,
+                $this->store,//Vincent rework
                 null,
                 $data,
                 $this->mockMode,

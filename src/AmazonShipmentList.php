@@ -366,8 +366,13 @@ class AmazonShipmentList extends AmazonInboundCore implements \Iterator
             $a = array();
             $n = 0;
             foreach ($this->shipmentList as $x) {
-                $a[$n] = new AmazonShipmentItemList($this->storeName, $x['ShipmentId'], $this->mockMode,
-                    $this->mockFiles, $this->config);
+                $a[$n] = new AmazonShipmentItemList(
+//                  $this->storeName,
+                    $this->store,//Vincent rework
+                    $x['ShipmentId'],
+                    $this->mockMode,
+                    $this->mockFiles,
+                    $this->config);
                 $a[$n]->setUseToken($token);
                 $a[$n]->mockIndex = $this->mockIndex;
                 $a[$n]->fetchItems();
@@ -376,8 +381,13 @@ class AmazonShipmentList extends AmazonInboundCore implements \Iterator
             return $a;
         } else {
             if (is_int($i)) {
-                $temp = new AmazonShipmentItemList($this->storeName, $this->shipmentList[$i]['ShipmentId'],
-                    $this->mockMode, $this->mockFiles, $this->config);
+                $temp = new AmazonShipmentItemList(
+                //  $this->storeName,
+                    $this->store,//Vincent rework
+                    $this->shipmentList[$i]['ShipmentId'],
+                    $this->mockMode,
+                    $this->mockFiles,
+                    $this->config);
                 $temp->setUseToken($token);
                 $temp->mockIndex = $this->mockIndex;
                 $temp->fetchItems();

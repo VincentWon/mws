@@ -1,4 +1,5 @@
 <?php
+
 namespace VincentWon\Mws;
 
 use Illuminate\Support\Facades\Log;
@@ -102,6 +103,7 @@ abstract class AmazonCore
     protected $throttleSafe;
     protected $throttleGroup;
     protected $throttleStop = false;
+    protected $store; //Vincent rework
     protected $storeName;
     protected $options;
     protected $config;
@@ -136,7 +138,8 @@ abstract class AmazonCore
             $config = config('amazon');//__DIR__ . '/../../amazon-config.php';
         }
         $this->setConfig($config);
-        $this->setStore($s);
+//        $this->setStore($s);
+        $this->newSetStore($s); //Vincent rework
         $this->setMock($mock, $m);
         $this->env = $config['env'];
         $this->options['SignatureVersion'] = 2;
@@ -450,6 +453,41 @@ abstract class AmazonCore
     }
 
     /**
+     * New Function to Set Store
+     * Vincent rework
+     *
+     * @param null $s
+     * @throws Exception
+     * @throws \Exception
+     */
+    public function newSetStore($s = null)
+    {
+        if (empty($s) || !is_array($s)) {
+            throw new \Exception("No stores defined!");
+        }
+        $this->store = $s;
+        if (array_key_exists('merchantId', $this->store)) {
+            $this->options['SellerId'] = $this->store['merchantId'];
+        } else {
+            $this->log("Merchant ID is missing!", 'Warning');
+        }
+        if (array_key_exists('keyId', $this->store)) {
+            $this->options['AWSAccessKeyId'] = $this->store['keyId'];
+        } else {
+            $this->log("Access Key ID is missing!", 'Warning');
+        }
+        if (!array_key_exists('secretKey', $this->store)) {
+            $this->log("Secret Key is missing!", 'Warning');
+        }
+        if (!empty($this->store['serviceUrl'])) {
+            $this->urlbase = $this->store['serviceUrl'];
+        }
+        if (!empty($this->store['MWSAuthToken'])) {
+            $this->options['MWSAuthToken'] = $this->store['MWSAuthToken'];
+        }
+    }
+
+    /**
      * Enables or disables the throttle stop.
      *
      * When the throttle stop is enabled, throttled requests will not  be repeated.
@@ -587,12 +625,21 @@ abstract class AmazonCore
      */
     protected function genQuery()
     {
+        /*original
         $store = $this->config['store'];
         if (array_key_exists($this->storeName, $store) && array_key_exists('secretKey', $store[$this->storeName])) {
             $secretKey = $store[$this->storeName]['secretKey'];
         } else {
             throw new \Exception("Secret Key is missing!");
         }
+        */
+        //Vincent rework
+        if (!empty($this->store) && array_key_exists('secretKey', $this->store)) {
+            $secretKey = $this->store['secretKey'];
+        } else {
+            throw new \Exception("Secret Key is missing!");
+        }
+
         unset($this->options['Signature']);
         $this->options['Timestamp'] = $this->genTime();
         $this->options['Signature'] = $this->_signParameters($this->options, $secretKey);
@@ -755,6 +802,7 @@ abstract class AmazonCore
     }
 
     //Functions from Athena:
+
     /**
      * Get url or send POST data
      * @param string $url

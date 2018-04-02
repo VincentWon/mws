@@ -1,4 +1,5 @@
 <?php
+
 namespace VincentWon\Mws;
 
 /**
@@ -130,7 +131,8 @@ class AmazonOrder extends AmazonOrderCore
             $token = false;
         }
         $items = new AmazonOrderItemList(
-            $this->storeName,
+//            $this->storeName,
+            $this->store,//Vincent rework
             $this->data['AmazonOrderId'],
             $this->mockMode,
             $this->mockFiles,
