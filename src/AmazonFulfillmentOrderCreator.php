@@ -1,4 +1,5 @@
 <?php
+namespace VincentWon\Mws;
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -18,14 +19,14 @@
 
 /**
  * Submits a request to create a fulfillment order to Amazon.
- * 
+ *
  * This Amazon Outbound Core object can submit a request to Amazon to
  * create a new Fulfillment Order. In order to create an order,
  * a Shipment ID is needed. Shipment IDs are given by Amazon by
  * using the <i>AmazonFulfillmentPreview</i> object.
  */
 class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
-    
+
     /**
      * Sets the marketplace associated with the fulfillment order. (Optional)
      * @param string $m <p>Marketplace ID</p>
@@ -38,10 +39,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Sets the fulfillment order ID. (Required)
-     * 
+     *
      * This method sets the Fulfillment Order ID to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * A fulfillment order ID can be generated using the <i>AmazonFulfillmentPreview</i> object.
@@ -55,10 +56,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Sets the displayed order ID. (Required)
-     * 
+     *
      * This method sets the Displayable Order ID to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * This is your own order ID, and is the ID that is displayed on the packing slip.
@@ -89,10 +90,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Sets the displayed timestamp. (Required)
-     * 
+     *
      * This method sets the displayed timestamp to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * The parameter is passed through <i>strtotime</i>, so values such as "-1 hour" are fine.
@@ -107,10 +108,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Sets the displayed comment. (Required)
-     * 
+     *
      * This method sets the displayed order comment to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * @param string $s <p>Maximum 1000 characters.</p>
@@ -123,10 +124,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Sets the shipping speed. (Required)
-     * 
+     *
      * This method sets the shipping speed to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * @param string $s <p>"Standard", "Expedited", or "Priority"</p>
@@ -144,10 +145,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Sets the address. (Required)
-     * 
+     *
      * This method sets the destination address to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * The array provided should have the following fields:
@@ -199,10 +200,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             $this->options['DestinationAddress.PhoneNumber'] = null;
         }
     }
-    
+
     /**
      * Resets the address options.
-     * 
+     *
      * Since address is a required parameter, these options should not be removed
      * without replacing them, so this method is not public.
      */
@@ -218,10 +219,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         unset($this->options['DestinationAddress.PostalCode']);
         unset($this->options['DestinationAddress.PhoneNumber']);
     }
-    
+
     /**
      * Sets the fulfillment policy. (Optional)
-     * 
+     *
      * This method sets the Fulfillment Policy to be sent in the next request.
      * If this parameter is not set, Amazon will assume a <i>FillOrKill</i> policy.
      * Here is a quick description of the policies:
@@ -245,7 +246,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * The "FulfillmentMethod" option is no longer used.
      * @return boolean <b>FALSE</b>
@@ -255,10 +256,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         $this->log("The FulfillmentMethod option is no longer used for creating fulfillment orders.", 'Warning');
         return FALSE;
     }
-    
+
     /**
      * Sets the email(s). (Optional)
-     * 
+     *
      * This method sets the list of Email addresses to be sent in the next request.
      * Setting this parameter tells Amazon who to send emails to regarding the
      * completion of the shipment.
@@ -280,10 +281,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             return false;
         }
     }
-    
+
     /**
      * Removes email options.
-     * 
+     *
      * Use this in case you change your mind and want to remove the email
      * parameters you previously set.
      */
@@ -386,10 +387,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         unset($this->options['DeliveryWindow.StartDateTime']);
         unset($this->options['DeliveryWindow.EndDateTime']);
     }
-    
+
     /**
      * Sets the items. (Required)
-     * 
+     *
      * This method sets the Fulfillment Order ID to be sent in the next request.
      * This parameter is required for creating a fulfillment order with Amazon.
      * The array provided should contain a list of arrays, each with the following fields:
@@ -448,7 +449,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
                     $this->options['Items.member.'.$i.'.PerUnitTax.CurrencyCode'] = $x['PerUnitTax']['CurrencyCode'];
                     $this->options['Items.member.'.$i.'.PerUnitTax.Value'] = $x['PerUnitTax']['Value'];
                 }
-                
+
                 $i++;
             } else {
                 $this->resetItems();
@@ -457,10 +458,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             }
         }
     }
-    
+
     /**
      * Resets the item options.
-     * 
+     *
      * Since the list of items is a required parameter, these options should not be removed
      * without replacing them, so this method is not public.
      */
@@ -471,10 +472,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             }
         }
     }
-    
+
     /**
      * Creates a Fulfillment Order with Amazon.
-     * 
+     *
      * Submits a <i>CreateFulfillmentOrder</i> request to Amazon. In order to do this,
      * a number of parameters are required. Amazon will send back an HTTP response,
      * so there is no data to retrieve afterwards. The following parameters are required:
@@ -513,11 +514,11 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         }
 
         $this->prepareCreate();
-        
+
         $url = $this->urlbase.$this->urlbranch;
-        
+
         $query = $this->genQuery();
-        
+
         if ($this->mockMode){
             $response = $this->fetchMockResponse();
         } else {
@@ -586,6 +587,6 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         $this->resetCodSettings();
         $this->resetDeliveryWindow();
     }
-    
+
 }
 ?>
