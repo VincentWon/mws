@@ -53,7 +53,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         if (is_string($s)){
             $this->options['SellerFulfillmentOrderId'] = $s;
         } else {
-            return false;
+            return $this->message('订单配送编号错误',404);
         }
     }
 
@@ -70,7 +70,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         if (is_string($s)){
             $this->options['DisplayableOrderId'] = $s;
         } else {
-            return false;
+            return $this->message('订单配送编号错误',404);
         }
     }
 
@@ -87,7 +87,8 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             $this->options['FulfillmentAction'] = $s;
         } else {
             $this->log("Tried to set fulfillment action to invalid value", 'Warning');
-            return false;
+            $message="配送类型错误";
+            return $this->message($message,404);
         }
     }
 
@@ -105,7 +106,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             $time = $this->genTime($s);
             $this->options['DisplayableOrderDateTime'] = $time;
         } else {
-            return false;
+            return $this->message('配送订单日期错误',404);
         }
     }
 
@@ -121,7 +122,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         if (is_string($s)){
             $this->options['DisplayableOrderComment'] = $s;
         } else {
-            return false;
+            return $this->message('订单详情文本错误',404);
         }
     }
 
@@ -139,10 +140,10 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
                 $this->options['ShippingSpeedCategory'] = $s;
             } else {
                 $this->log("Tried to set shipping status to invalid value",'Warning');
-                return false;
+                return $this->message('配送方式无效',404);
             }
         } else {
-            return false;
+            return $this->message('配送方式错误',404);
         }
     }
 
@@ -170,7 +171,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
     public function setAddress($a){
         if (is_null($a) || is_string($a) || !$a){
             $this->log("Tried to set address to invalid values",'Warning');
-            return false;
+            return $this->message('无配送地址',404);
         }
         $this->resetAddress();
         $this->options['DestinationAddress.Name'] = $a['Name'];
@@ -278,7 +279,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
                 $i++;
             }
         } else {
-            return false;
+            return $this->message("电子邮箱错误",404);
         }
     }
 
@@ -416,7 +417,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
     public function setItems($a){
         if (is_null($a) || is_string($a) || !$a){
             $this->log("Tried to set Items to invalid values",'Warning');
-            return false;
+            return $this->message("无配送商品",404);
         }
         $this->resetItems();
         $i = 1;
@@ -454,7 +455,7 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
             } else {
                 $this->resetItems();
                 $this->log("Tried to set Items with invalid array",'Warning');
-                return false;
+                return $this->message("配送商品无效",404);
             }
         }
     }
@@ -486,49 +487,47 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
     public function createOrder(){
         if (!array_key_exists('SellerFulfillmentOrderId',$this->options)){
             $this->log("Seller Fulfillment Order ID must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单配送编号不能为空",404);
         }
         if (!array_key_exists('DisplayableOrderId',$this->options)){
             $this->log("Displayable Order ID must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单配送编号不能为空",404);
         }
         if (!array_key_exists('DisplayableOrderDateTime',$this->options)){
             $this->log("Date must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单配送日期不能为空",404);
         }
         if (!array_key_exists('DisplayableOrderComment',$this->options)){
             $this->log("Comment must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单详情文本不能为空",404);
         }
         if (!array_key_exists('ShippingSpeedCategory',$this->options)){
             $this->log("Shipping Speed must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单配送方式不能为空",404);
         }
         if (!array_key_exists('DestinationAddress.Name',$this->options)){
             $this->log("Address must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单配送地址不能为空",404);
         }
         if (!array_key_exists('Items.member.1.SellerSKU',$this->options)){
             $this->log("Items must be set in order to create an order",'Warning');
-            return false;
+            return $this->message("订单配送商品不能为空",404);
         }
 
         $this->prepareCreate();
 
         $url = $this->urlbase.$this->urlbranch;
-
         $query = $this->genQuery();
-
         if ($this->mockMode){
             $response = $this->fetchMockResponse();
         } else {
             $response = $this->sendRequest($url, array('Post'=>$query));
         }
-        if (!$this->checkResponse($response)){
-            return false;
+        if (json_decode($this->checkResponse($response))->code==404){
+            return $this->checkResponse($response);
         } else {
             $this->log("Successfully created Fulfillment Order ".$this->options['SellerFulfillmentOrderId']." / ".$this->options['DisplayableOrderId']);
-            return true;
+            return $this->message("Successfully created Fulfillment Order ".$this->options['SellerFulfillmentOrderId']." / ".$this->options['DisplayableOrderId'],200);
         }
     }
 
@@ -586,6 +585,27 @@ class AmazonFulfillmentOrderCreator extends AmazonOutboundCore{
         $this->options['Action'] = 'UpdateFulfillmentOrder';
         $this->resetCodSettings();
         $this->resetDeliveryWindow();
+    }
+    protected function checkResponse($r)
+    {
+        if (!is_array($r) || !array_key_exists('code', $r)) {
+            $this->log("No Response found", 'Warning');
+            $message="No Response found,未响应";
+            return $this->message($message,404);
+        }
+        if ($r['code'] == 200) {
+            return $this->message('成功',200);
+        } else {
+            $xml = simplexml_load_string($r['body'])->Error;
+            $this->log("Bad Response! " . $r['code'] . " " . $r['error'] . ": " . $xml->Code . " - " . $xml->Message,
+                'Urgent');
+            $message=$xml->Message."响应失败";
+            return $this->message($message,404);
+        }
+    }
+    public function message($message, $code){
+        $arr=['message'=>$message,'code'=>$code];
+        return json_encode($arr);
     }
 
 }
